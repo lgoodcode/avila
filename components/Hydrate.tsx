@@ -11,6 +11,7 @@ export default function Hydrate({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		setMounted(true)
+		// setTimeout(() => setMounted(true), 3e3)
 	}, [])
 
 	if (!mounted) {

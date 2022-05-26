@@ -22,10 +22,12 @@ import {
 import Head from 'next/head'
 import Image from 'next/image'
 import NextLink from 'next/link'
+import Script from 'next/script'
 import { BiUserVoice } from 'react-icons/bi'
 import { FaRegHandPaper } from 'react-icons/fa'
 import { FiEye } from 'react-icons/fi'
 import { Parallax } from 'react-parallax'
+import BlogCard from '../components/BlogCard'
 import Carousel from '../components/Carousel'
 import Layout from '../components/Layout'
 import styles from '../styles/landing.module.css'
@@ -36,8 +38,9 @@ export default function HomePage() {
 			<Head>
 				<title>AvilaCare</title>
 			</Head>
+			<Script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></Script>
 
-			<Center as="section" id="hero" minH="100vh" maxH="100vh" position="relative">
+			<Center as="section" id="hero" minH="100vh" maxH="100vh">
 				<Carousel
 					boxProps={{
 						position: 'absolute',
@@ -143,10 +146,15 @@ export default function HomePage() {
 				</Box>
 			</Center>
 
-			{/* <Box id="locations" as="section" mb={120} py={20} px={4}>  */}
 			<Box id="locations" as="section" py={40}>
 				<VStack spacing={28} w="full" px={4}>
-					<VStack w="full" spacing={8} justifyContent="center">
+					<VStack
+						className="heading"
+						w="full"
+						spacing={8}
+						justifyContent="center"
+						data-aos="fade-up"
+					>
 						<HStack spacing={2}>
 							<Heading color="primary.500" size={useBreakpointValue({ base: '2xl', md: '3xl' })}>
 								Community
@@ -155,6 +163,7 @@ export default function HomePage() {
 								Locations
 							</Heading>
 						</HStack>
+
 						<Box px={{ base: 0, md: 24 }}>
 							<Text fontSize="xl" textAlign="center" color="gray.700">
 								Select either our Bellingham, WA community or our Heath, TX community by clicking on
@@ -164,9 +173,12 @@ export default function HomePage() {
 					</VStack>
 
 					<Stack
+						className="locations"
 						textAlign="center"
 						direction={{ base: 'column', lg: 'row' }}
 						spacing={{ base: 12, sm: 24, lg: 4, xl: 48 }}
+						data-aos="fade-up"
+						data-aos-delay="100"
 					>
 						<VStack spacing={4} mb={{ base: 12, sm: 0 }}>
 							<Heading size="md">AvilaCare Senior Living in Bellingham, WA</Heading>
@@ -211,7 +223,6 @@ export default function HomePage() {
 				</VStack>
 			</Box>
 
-			{/* <Box id="quote" as="section" mb={120} py={20}> */}
 			<Box id="quote" as="section">
 				<Parallax
 					strength={400}
@@ -221,7 +232,7 @@ export default function HomePage() {
 						objectFit: 'cover',
 					}}
 				>
-					<Flex minH={600} py={24} bg="rgba(0, 0, 0, 0.6)" alignItems="center">
+					<Flex minH={600} py={24} bg="rgba(0, 0, 0, 0.6)" alignItems="center" data-aos="fade">
 						<VStack spacing={16} color="white" px={{ base: 4, md: 24, xl: 64 }}>
 							<Text fontSize="2xl" fontStyle="italic">
 								I was a &quot;hands-on&quot; caregiver. Determined of taking care of my mother
@@ -241,7 +252,12 @@ export default function HomePage() {
 			<Box id="care" as="section" py={40}>
 				<VStack spacing={32} w="full" px={4}>
 					<VStack w="full" spacing={12} justifyContent="center">
-						<Stack spacing={4} textAlign="center" direction={{ base: 'column', lg: 'row' }}>
+						<Stack
+							spacing={4}
+							textAlign="center"
+							direction={{ base: 'column', lg: 'row' }}
+							data-aos="fade-down"
+						>
 							<Heading color="primary.500" size="3xl">
 								Assisted Living
 							</Heading>
@@ -265,6 +281,8 @@ export default function HomePage() {
 							spacing={8}
 							textAlign="center"
 							px={{ base: 0, md: 12, lg: 16, xl: 40, '2xl': 72 }}
+							data-aos="fade-down"
+							data-aos-delay="100"
 						>
 							<Text fontSize="xl" color="gray.700">
 								At AvilaCare, all our communities are 100% owned and managed by us, so don&apos;t be
@@ -286,7 +304,14 @@ export default function HomePage() {
 						spacing={{ base: 12, lg: 4, xl: 16 }}
 						textAlign="center"
 					>
-						<Box className="info-card" minW={320} maxW={360} p={4}>
+						<Box
+							className="info-card"
+							minW={320}
+							maxW={360}
+							p={4}
+							data-aos="fade-up-right"
+							data-aos-delay="400"
+						>
 							<VStack spacing={4}>
 								<Icon as={FiEye} h={12} w={12} color="secondary.500" />
 								<Heading size="xl">Gaze</Heading>
@@ -296,7 +321,14 @@ export default function HomePage() {
 								</Text>
 							</VStack>
 						</Box>
-						<Box className="info-card" minW={320} maxW={360} p={4}>
+						<Box
+							className="info-card"
+							minW={320}
+							maxW={360}
+							p={4}
+							data-aos="fade-up"
+							data-aos-delay="700"
+						>
 							<VStack spacing={4}>
 								<Icon as={BiUserVoice} h={12} w={12} color="primary.500" />
 								<Heading size="xl">Speech</Heading>
@@ -306,7 +338,14 @@ export default function HomePage() {
 								</Text>
 							</VStack>
 						</Box>
-						<Box className="info-card" minW={320} maxW={360} p={4}>
+						<Box
+							className="info-card"
+							minW={320}
+							maxW={360}
+							p={4}
+							data-aos="fade-up-left"
+							data-aos-delay="900"
+						>
 							<VStack spacing={4}>
 								<Icon as={FaRegHandPaper} h={12} w={12} color="secondary.500" />
 								<Heading size="xl">Touch</Heading>
@@ -370,7 +409,7 @@ export default function HomePage() {
 						px={24}
 					>
 						<GridItem colStart={1} rowStart={1} colSpan={3} rowSpan={3}>
-							<Box w="full" h="full" objectFit="cover" position="relative">
+							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-left">
 								<Image
 									src="/img/lifestyle_cooking.jpg"
 									layout="fill"
@@ -379,22 +418,22 @@ export default function HomePage() {
 							</Box>
 						</GridItem>
 						<GridItem colStart={4} rowStart={1} colSpan={5} rowSpan={6}>
-							<Box w="full" h="full" objectFit="cover" position="relative">
+							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-up">
 								<Image src="/img/lifestyle_meals.jpg" layout="fill" alt="meals" />
 							</Box>
 						</GridItem>
 						<GridItem colStart={1} rowStart={4} colSpan={3} rowSpan={3}>
-							<Box w="full" h="full" objectFit="cover" position="relative">
+							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-down">
 								<Image src="/img/lifestyle_activities.jpg" layout="fill" alt="activities" />
 							</Box>
 						</GridItem>
 						<GridItem colStart={1} rowStart={7} colSpan={4} rowSpan={3}>
-							<Box w="full" h="full" objectFit="cover" position="relative">
+							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-right">
 								<Image src="/img/lifestyle_housekeeping.jpg" layout="fill" alt="something" />
 							</Box>
 						</GridItem>
 						<GridItem colStart={5} rowStart={7} colSpan={4} rowSpan={3}>
-							<Box w="full" h="full" objectFit="cover" position="relative">
+							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-right">
 								<Image src="/img/lifestyle_housekeeping.jpg" layout="fill" alt="something" />
 							</Box>
 						</GridItem>
@@ -404,7 +443,7 @@ export default function HomePage() {
 
 			<Box id="blogs" as="section" py={40} px={4} bg="primary.400">
 				<VStack spacing={24} w="full">
-					<Heading color="white" size="3xl">
+					<Heading color="white" size="3xl" data-aos="fade-down">
 						Latest Blogs
 					</Heading>
 
@@ -416,157 +455,54 @@ export default function HomePage() {
 						flexWrap="wrap"
 						justifyContent="space-around"
 					>
-						<VStack
-							className="blog-card"
-							maxW={360}
-							bg="white"
-							spacing={8}
-							px={6}
-							py={8}
-							mt={16}
-							top={0}
-							borderRadius="lg"
-							position="relative"
-							transition="top linear 200ms, box-shadow linear 200ms"
-							_hover={{
-								cursor: 'pointer',
-								boxShadow: 'dark-lg',
-								top: -3,
-							}}
-						>
-							<Box w="full" h="full" position="relative">
-								<Image
-									src="/img/blog_safe-check.jpg"
-									width={300}
-									height={200}
-									alt="Nurse patient photo created by rawpixel.com - www.freepik.com"
-								/>
-							</Box>
-
-							<Flex className="date-and-read-time" w="full" justifyContent="space-between">
-								<Box>
-									<Text>7 May 2022</Text>
-								</Box>
-								<Box>
-									<Text>1 min read</Text>
-								</Box>
-							</Flex>
-
-							<Box className="title">
-								<Heading size="md">How to Perform Safe Check-Ins on Seniors</Heading>
-							</Box>
-
-							<Box className="description">
-								Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua
-								nostrud aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam
-								mollit.
-							</Box>
-						</VStack>
-
-						<VStack
-							className="blog-card"
-							maxW={360}
-							bg="white"
-							spacing={8}
-							px={6}
-							py={8}
-							mt={16}
-							top={0}
-							borderRadius="lg"
-							position="relative"
-							transition="top linear 200ms, box-shadow linear 200ms"
-							_hover={{
-								cursor: 'pointer',
-								boxShadow: 'dark-lg',
-								top: -3,
-							}}
-						>
-							<Box w="full" h="full" position="relative">
-								<Image
-									src="/img/blog_safe-check.jpg"
-									width={300}
-									height={200}
-									alt="Nurse patient photo created by rawpixel.com - www.freepik.com"
-								/>
-							</Box>
-
-							<Flex className="date-and-read-time" w="full" justifyContent="space-between">
-								<Box>
-									<Text>7 May 2022</Text>
-								</Box>
-								<Box>
-									<Text>1 min read</Text>
-								</Box>
-							</Flex>
-
-							<Box className="title">
-								<Heading size="md">How to Perform Safe Check-Ins on Seniors</Heading>
-							</Box>
-
-							<Box className="description">
-								Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua
-								nostrud aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam
-								mollit.
-							</Box>
-						</VStack>
-
-						<VStack
-							className="blog-card"
-							maxW={360}
-							bg="white"
-							spacing={8}
-							px={6}
-							py={8}
-							mt={16}
-							top={0}
-							borderRadius="lg"
-							position="relative"
-							transition="top linear 200ms, box-shadow linear 200ms"
-							_hover={{
-								cursor: 'pointer',
-								boxShadow: 'dark-lg',
-								top: -3,
-							}}
-						>
-							<Box w="full" h="full" position="relative">
-								<Image
-									src="/img/blog_safe-check.jpg"
-									width={300}
-									height={200}
-									alt="Nurse patient photo created by rawpixel.com - www.freepik.com"
-								/>
-							</Box>
-
-							<Flex className="date-and-read-time" w="full" justifyContent="space-between">
-								<Box>
-									<Text>7 May 2022</Text>
-								</Box>
-								<Box>
-									<Text>1 min read</Text>
-								</Box>
-							</Flex>
-
-							<Box className="title">
-								<Heading size="md">How to Perform Safe Check-Ins on Seniors</Heading>
-							</Box>
-
-							<Box className="description">
-								Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua
-								nostrud aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam
-								mollit.
-							</Box>
-						</VStack>
+						<BlogCard
+							title="How to Perform Safe Check-Ins on Seniors"
+							date="7 May 2022"
+							img="/img/blog_safe-check.jpg"
+							readTime="1 min read"
+							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
+							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
+							data-aos="fade-down"
+							data-aos-delay="200"
+						/>
+						<BlogCard
+							title="How to Perform Safe Check-Ins on Seniors"
+							date="7 May 2022"
+							img="/img/blog_safe-check.jpg"
+							readTime="1 min read"
+							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
+							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
+							data-aos="fade-down"
+							data-aos-delay="500"
+						/>
+						<BlogCard
+							title="How to Perform Safe Check-Ins on Seniors"
+							date="7 May 2022"
+							img="/img/blog_safe-check.jpg"
+							readTime="1 min read"
+							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
+							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
+							data-aos="fade-down"
+							data-aos-delay="800"
+						/>
 					</Flex>
 
 					<Center>
-						<Button bg="white" fontSize="xl" py={8} px={6}>
+						<Button
+							bg="white"
+							fontSize="xl"
+							py={8}
+							px={6}
+							data-aos="fade-down"
+							data-aos-delay="300"
+						>
 							Read more
 						</Button>
 					</Center>
 				</VStack>
 			</Box>
 
-			<Box id="contact" as="section" py={40} px={4}>
+			<Box id="contact" as="section" py={40} px={0}>
 				<VStack spacing={24} w="full">
 					<VStack w="full" spacing={12} justifyContent="center">
 						<HStack spacing={4} textAlign="center">
@@ -699,6 +635,7 @@ export default function HomePage() {
 
 										<Stack spacing={6}>
 											<Button
+												py={6}
 												type="submit"
 												variant="primarySolid"
 												// isLoading={status === 'loading'}

@@ -28,6 +28,7 @@ export default function Carousel({ images, duration = 7000, boxProps }: Carousel
 					opacity={i === selected ? 1 : 0}
 					transitionProperty="opacity"
 					transitionDuration="1s"
+					// position="relative"
 				>
 					<Image {...image} alt={image.alt} />
 				</Box>
