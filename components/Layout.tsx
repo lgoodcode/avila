@@ -1,8 +1,10 @@
 import { Box, useBreakpointValue } from '@chakra-ui/react'
-import AOS from 'aos'
 import React, { useEffect } from 'react'
-import Footer from './Footer'
+import AOS from 'aos'
+import dynamic from 'next/dynamic'
 import Navbar from './Navbar'
+// import Footer from './Footer'
+const Footer = dynamic(() => import('./Footer'))
 
 type LayoutProps = {
 	children: React.ReactNode
