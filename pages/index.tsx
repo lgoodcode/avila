@@ -19,13 +19,13 @@ import {
 	VStack,
 } from '@chakra-ui/react'
 import Head from 'next/head'
-import Image from 'next/image'
 import NextLink from 'next/link'
 import Script from 'next/script'
 import { Parallax } from 'react-parallax'
 import { BiUserVoice } from 'react-icons/bi'
 import { FaRegHandPaper } from 'react-icons/fa'
 import { FiEye } from 'react-icons/fi'
+import Image from '../components/Image'
 import BlogCard from '../components/BlogCard'
 import Card from '../components/Card'
 import Carousel from '../components/Carousel'
@@ -33,9 +33,6 @@ import Layout from '../components/Layout'
 import styles from '../styles/landing.module.css'
 
 export default function HomePage() {
-	const blurDataURL =
-		"url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg'xmlns%3Axlink='http%3A//www.w3.org/1999/xlink' viewBox='0 0 1280 853'%3E%3Cfilter id='b' color-interpolation-filters='sRGB'%3E%3CfeGaussianBlur stdDeviation='.5'%3E%3C/feGaussianBlur%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1 1'%3E%3C/feFuncA%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Cimage filter='url(%23b)' x='0' y='0' height='100%25' width='100%25'xlink%3Ahref='data%3Aimage/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAGCAIAAACepSOSAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAs0lEQVQI1wGoAFf/AImSoJSer5yjs52ktp2luJuluKOpuJefsoCNowB+kKaOm66grL+krsCnsMGrt8m1u8mzt8OVoLIAhJqzjZ2tnLLLnLHJp7fNmpyjqbPCqLrRjqO7AIeUn5ultaWtt56msaSnroZyY4mBgLq7wY6TmwCRfk2Pf1uzm2WulV+xmV6rmGyQfFm3nWSBcEIAfm46jX1FkH5Djn5AmodGo49MopBLlIRBfG8yj/dfjF5frTUAAAAASUVORK5CYII='%3E%3C/image%3E%3C/svg%3E')"
-
 	return (
 		<Layout>
 			<Head>
@@ -94,14 +91,13 @@ export default function HomePage() {
 				<Box
 					className="content"
 					w="full"
-					h="full"
+					h="100vh"
 					px={{ base: 4, sm: 8, lg: 0 }}
 					width={{ base: 'full', sm: 640, md: 860 }}
 					ml="auto"
 					mr={{ base: 0, sm: 12, md: 36 }}
-					py={90}
 				>
-					<Flex h="full" alignItems="center">
+					<Flex h="full" alignItems="center" pt={{ base: 16, sm: 0 }}>
 						<VStack
 							color="white"
 							spacing={12}
@@ -195,8 +191,6 @@ export default function HomePage() {
 											width={480}
 											height={270}
 											priority
-											placeholder="blur"
-											blurDataURL={blurDataURL}
 										/>
 										<figcaption>
 											<Text>2315 WILLIAMS STREET,</Text>
@@ -218,8 +212,6 @@ export default function HomePage() {
 											width={480}
 											height={270}
 											priority
-											placeholder="blur"
-											blurDataURL={blurDataURL}
 										/>
 										<figcaption>
 											<Text>126 SMIRL DRIVE,</Text>
@@ -351,15 +343,7 @@ export default function HomePage() {
 
 			<Box id="community" as="section" py={40} bg="gray.100" position="relative">
 				<Box w="full" h={{ base: '20%', md: '45%' }} position="absolute" zIndex={0} bottom={-2}>
-					<Image
-						src="/img/wave.svg"
-						layout="fill"
-						objectFit="cover"
-						alt="shape svg"
-						priority
-						placeholder="blur"
-						blurDataURL={blurDataURL}
-					/>
+					<Image src="/img/wave.svg" layout="fill" objectFit="cover" alt="shape svg" priority />
 				</Box>
 
 				<VStack spacing={28} w="full" px={{ base: 4, md: 8, lg: 12 }}>
@@ -412,53 +396,27 @@ export default function HomePage() {
 									src="/img/lifestyle_cooking.jpg"
 									layout="fill"
 									alt="Chef cooking photo created by freepik - www.freepik.com"
-									placeholder="blur"
-									blurDataURL={blurDataURL}
 								/>
 							</Box>
 						</GridItem>
 						<GridItem colStart={4} rowStart={1} colSpan={5} rowSpan={6}>
 							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-up">
-								<Image
-									src="/img/lifestyle_meals.jpg"
-									layout="fill"
-									alt="meals"
-									placeholder="blur"
-									blurDataURL={blurDataURL}
-								/>
+								<Image src="/img/lifestyle_meals.jpg" layout="fill" alt="meals" />
 							</Box>
 						</GridItem>
 						<GridItem colStart={1} rowStart={4} colSpan={3} rowSpan={3}>
 							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-down">
-								<Image
-									src="/img/lifestyle_activities.jpg"
-									layout="fill"
-									alt="activities"
-									placeholder="blur"
-									blurDataURL={blurDataURL}
-								/>
+								<Image src="/img/lifestyle_activities.jpg" layout="fill" alt="activities" />
 							</Box>
 						</GridItem>
 						<GridItem colStart={1} rowStart={7} colSpan={4} rowSpan={3}>
 							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-right">
-								<Image
-									src="/img/lifestyle_housekeeping.jpg"
-									layout="fill"
-									alt="something"
-									placeholder="blur"
-									blurDataURL={blurDataURL}
-								/>
+								<Image src="/img/lifestyle_housekeeping.jpg" layout="fill" alt="something" />
 							</Box>
 						</GridItem>
 						<GridItem colStart={5} rowStart={7} colSpan={4} rowSpan={3}>
 							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-right">
-								<Image
-									src="/img/lifestyle_housekeeping.jpg"
-									layout="fill"
-									alt="something"
-									placeholder="blur"
-									blurDataURL={blurDataURL}
-								/>
+								<Image src="/img/lifestyle_housekeeping.jpg" layout="fill" alt="something" />
 							</Box>
 						</GridItem>
 					</Grid>
@@ -484,8 +442,6 @@ export default function HomePage() {
 							date="7 May 2022"
 							img="/img/blog_safe-check.jpg"
 							imgAlt="Nurse patient photo created by rawpixel.com - www.freepik.com"
-							placeholder="blur"
-							blurDataURL={blurDataURL}
 							readTime="1 min read"
 							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
 							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
@@ -497,8 +453,6 @@ export default function HomePage() {
 							date="14 Mar 2022"
 							img="/img/blog_yoga.jpg"
 							imgAlt="Pranayama photo created by yanalya - www.freepik.com"
-							placeholder="blur"
-							blurDataURL={blurDataURL}
 							readTime="3 min read"
 							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
 							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
@@ -510,8 +464,6 @@ export default function HomePage() {
 							date="21 Dec 2020"
 							img="/img/blog_finance.jpg"
 							imgAlt="Money dollars photo created by frimufilms - www.freepik.com"
-							placeholder="blur"
-							blurDataURL={blurDataURL}
 							readTime="3 min read"
 							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
 							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."

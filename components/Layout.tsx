@@ -1,6 +1,6 @@
-import { Box, useBreakpoint } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
+import { Box, useBreakpointValue } from '@chakra-ui/react'
 import AOS from 'aos'
+import React, { useEffect } from 'react'
 import Footer from './Footer'
 import Navbar from './Navbar'
 
@@ -9,15 +9,15 @@ type LayoutProps = {
 }
 
 export default function Layout({ children }: LayoutProps) {
-	const bp = useBreakpoint('base')
+	const offset = useBreakpointValue({ base: 40, md: 80, lg: 120 })
 
 	useEffect(() => {
 		AOS.init({
 			once: true,
 			duration: 800,
-			offset: bp === 'base' ? 60 : 140,
+			offset,
 		})
-	}, [bp])
+	}, [offset])
 
 	return (
 		<>

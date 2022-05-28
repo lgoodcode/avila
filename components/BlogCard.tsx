@@ -1,5 +1,5 @@
 import { VStack, Box, Flex, Heading, Text } from '@chakra-ui/react'
-import Image from 'next/image'
+import Image from './Image'
 
 export type BlogCardProps = {
 	title: string
@@ -18,8 +18,6 @@ export default function BlogCard({
 	date,
 	img,
 	imgAlt,
-	placeholder,
-	blurDataURL,
 	readTime,
 	description,
 	...rest
@@ -44,14 +42,7 @@ export default function BlogCard({
 				}}
 			>
 				<Box w="full" h="full" position="relative">
-					<Image
-						src={img}
-						width={300}
-						height={200}
-						alt={imgAlt}
-						placeholder={placeholder}
-						blurDataURL={blurDataURL}
-					/>
+					<Image src={img} width={300} height={200} alt={imgAlt} />
 				</Box>
 
 				<Flex className="date-and-read-time" w="full" justifyContent="space-between">
