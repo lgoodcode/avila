@@ -6,6 +6,8 @@ export type BlogCardProps = {
 	date: string
 	img: string
 	imgAlt: string
+	placeholder?: 'blur'
+	blurDataURL?: string
 	readTime: string
 	description: string
 	rest?: string[]
@@ -16,6 +18,8 @@ export default function BlogCard({
 	date,
 	img,
 	imgAlt,
+	placeholder,
+	blurDataURL,
 	readTime,
 	description,
 	...rest
@@ -40,7 +44,14 @@ export default function BlogCard({
 				}}
 			>
 				<Box w="full" h="full" position="relative">
-					<Image src={img} width={300} height={200} alt={imgAlt} />
+					<Image
+						src={img}
+						width={300}
+						height={200}
+						alt={imgAlt}
+						placeholder={placeholder}
+						blurDataURL={blurDataURL}
+					/>
 				</Box>
 
 				<Flex className="date-and-read-time" w="full" justifyContent="space-between">

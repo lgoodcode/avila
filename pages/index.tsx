@@ -33,11 +33,15 @@ import Layout from '../components/Layout'
 import styles from '../styles/landing.module.css'
 
 export default function HomePage() {
+	const blurDataURL =
+		"url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http%3A//www.w3.org/2000/svg'xmlns%3Axlink='http%3A//www.w3.org/1999/xlink' viewBox='0 0 1280 853'%3E%3Cfilter id='b' color-interpolation-filters='sRGB'%3E%3CfeGaussianBlur stdDeviation='.5'%3E%3C/feGaussianBlur%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1 1'%3E%3C/feFuncA%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Cimage filter='url(%23b)' x='0' y='0' height='100%25' width='100%25'xlink%3Ahref='data%3Aimage/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAGCAIAAACepSOSAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAs0lEQVQI1wGoAFf/AImSoJSer5yjs52ktp2luJuluKOpuJefsoCNowB+kKaOm66grL+krsCnsMGrt8m1u8mzt8OVoLIAhJqzjZ2tnLLLnLHJp7fNmpyjqbPCqLrRjqO7AIeUn5ultaWtt56msaSnroZyY4mBgLq7wY6TmwCRfk2Pf1uzm2WulV+xmV6rmGyQfFm3nWSBcEIAfm46jX1FkH5Djn5AmodGo49MopBLlIRBfG8yj/dfjF5frTUAAAAASUVORK5CYII='%3E%3C/image%3E%3C/svg%3E')"
+
 	return (
 		<Layout>
 			<Head>
 				<title>AvilaCare</title>
 			</Head>
+
 			<Script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></Script>
 
 			<Center as="section" id="hero" h="100vh">
@@ -191,6 +195,8 @@ export default function HomePage() {
 											width={480}
 											height={270}
 											priority
+											placeholder="blur"
+											blurDataURL={blurDataURL}
 										/>
 										<figcaption>
 											<Text>2315 WILLIAMS STREET,</Text>
@@ -212,6 +218,8 @@ export default function HomePage() {
 											width={480}
 											height={270}
 											priority
+											placeholder="blur"
+											blurDataURL={blurDataURL}
 										/>
 										<figcaption>
 											<Text>126 SMIRL DRIVE,</Text>
@@ -319,7 +327,7 @@ export default function HomePage() {
 							text="Gaze techniques provide healthy emotional sensations. Engaging at eye level is not only
 					warm and inviting, but a sign of humility and friendship."
 							data-aos="fade-up-right"
-							data-aos-delay="400"
+							data-aos-delay={useBreakpointValue({ base: 200, lg: 400 })}
 						/>
 						<Card
 							icon={BiUserVoice}
@@ -327,7 +335,7 @@ export default function HomePage() {
 							text="The right tone sets the foundation for communication. Soft and pleasant.
 									Informative and caring. How we speak, sets the tone."
 							data-aos="fade-up"
-							data-aos-delay="600"
+							data-aos-delay={useBreakpointValue({ base: 300, lg: 600 })}
 						/>
 						<Card
 							icon={FaRegHandPaper}
@@ -335,7 +343,7 @@ export default function HomePage() {
 							text="A warm touch is essential for quality care services. Sometime a gentle touch is
 									all that is needed to sooth a worried heart."
 							data-aos="fade-up-left"
-							data-aos-delay="800"
+							data-aos-delay={useBreakpointValue({ base: 400, lg: 800 })}
 						/>
 					</Stack>
 				</VStack>
@@ -343,11 +351,19 @@ export default function HomePage() {
 
 			<Box id="community" as="section" py={40} bg="gray.100" position="relative">
 				<Box w="full" h={{ base: '20%', md: '45%' }} position="absolute" zIndex={0} bottom={-2}>
-					<Image src="/img/wave.svg" layout="fill" objectFit="cover" alt="shape svg" priority />
+					<Image
+						src="/img/wave.svg"
+						layout="fill"
+						objectFit="cover"
+						alt="shape svg"
+						priority
+						placeholder="blur"
+						blurDataURL={blurDataURL}
+					/>
 				</Box>
 
 				<VStack spacing={28} w="full" px={{ base: 4, md: 8, lg: 12 }}>
-					<VStack w="full" spacing={12} justifyContent="center">
+					<VStack w="full" spacing={12} justifyContent="center" data-aos="fade-in">
 						<Stack spacing={4} textAlign="center" direction={{ base: 'column', sm: 'row' }}>
 							<Heading color="primary.500" size="3xl">
 								Life
@@ -396,27 +412,53 @@ export default function HomePage() {
 									src="/img/lifestyle_cooking.jpg"
 									layout="fill"
 									alt="Chef cooking photo created by freepik - www.freepik.com"
+									placeholder="blur"
+									blurDataURL={blurDataURL}
 								/>
 							</Box>
 						</GridItem>
 						<GridItem colStart={4} rowStart={1} colSpan={5} rowSpan={6}>
 							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-up">
-								<Image src="/img/lifestyle_meals.jpg" layout="fill" alt="meals" />
+								<Image
+									src="/img/lifestyle_meals.jpg"
+									layout="fill"
+									alt="meals"
+									placeholder="blur"
+									blurDataURL={blurDataURL}
+								/>
 							</Box>
 						</GridItem>
 						<GridItem colStart={1} rowStart={4} colSpan={3} rowSpan={3}>
 							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-down">
-								<Image src="/img/lifestyle_activities.jpg" layout="fill" alt="activities" />
+								<Image
+									src="/img/lifestyle_activities.jpg"
+									layout="fill"
+									alt="activities"
+									placeholder="blur"
+									blurDataURL={blurDataURL}
+								/>
 							</Box>
 						</GridItem>
 						<GridItem colStart={1} rowStart={7} colSpan={4} rowSpan={3}>
 							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-right">
-								<Image src="/img/lifestyle_housekeeping.jpg" layout="fill" alt="something" />
+								<Image
+									src="/img/lifestyle_housekeeping.jpg"
+									layout="fill"
+									alt="something"
+									placeholder="blur"
+									blurDataURL={blurDataURL}
+								/>
 							</Box>
 						</GridItem>
 						<GridItem colStart={5} rowStart={7} colSpan={4} rowSpan={3}>
 							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-right">
-								<Image src="/img/lifestyle_housekeeping.jpg" layout="fill" alt="something" />
+								<Image
+									src="/img/lifestyle_housekeeping.jpg"
+									layout="fill"
+									alt="something"
+									placeholder="blur"
+									blurDataURL={blurDataURL}
+								/>
 							</Box>
 						</GridItem>
 					</Grid>
@@ -442,33 +484,39 @@ export default function HomePage() {
 							date="7 May 2022"
 							img="/img/blog_safe-check.jpg"
 							imgAlt="Nurse patient photo created by rawpixel.com - www.freepik.com"
+							placeholder="blur"
+							blurDataURL={blurDataURL}
 							readTime="1 min read"
 							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
 							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
 							data-aos="fade-down"
-							data-aos-delay="200"
+							data-aos-delay={useBreakpointValue({ base: 100, lg: 200 })}
 						/>
 						<BlogCard
 							title="Boosting Caregiver Health with Yoga and Meditation"
 							date="14 Mar 2022"
 							img="/img/blog_yoga.jpg"
 							imgAlt="Pranayama photo created by yanalya - www.freepik.com"
+							placeholder="blur"
+							blurDataURL={blurDataURL}
 							readTime="3 min read"
 							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
 							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
 							data-aos="fade-down"
-							data-aos-delay="500"
+							data-aos-delay={useBreakpointValue({ base: 200, lg: 500 })}
 						/>
 						<BlogCard
 							title="Investigating the Financial Side of Retirement Living Space"
 							date="21 Dec 2020"
 							img="/img/blog_finance.jpg"
 							imgAlt="Money dollars photo created by frimufilms - www.freepik.com"
+							placeholder="blur"
+							blurDataURL={blurDataURL}
 							readTime="3 min read"
 							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
 							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
 							data-aos="fade-down"
-							data-aos-delay="800"
+							data-aos-delay={useBreakpointValue({ base: 300, lg: 800 })}
 						/>
 					</Flex>
 
@@ -479,7 +527,7 @@ export default function HomePage() {
 							py={8}
 							px={6}
 							data-aos="fade-down"
-							data-aos-delay="100"
+							data-aos-delay={useBreakpointValue({ base: 0, lg: 100 })}
 						>
 							Read more
 						</Button>
