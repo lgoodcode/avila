@@ -17,7 +17,7 @@ export default function Layout({ children }: LayoutProps) {
 			duration: 800,
 			offset: bp === 'base' ? 60 : 140,
 		})
-	}, [])
+	}, [bp])
 
 	return (
 		<>

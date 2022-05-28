@@ -19,7 +19,7 @@ export default function Footer() {
 			as="footer"
 			w="full"
 			py={16}
-			px={useBreakpointValue({ base: 8, md: 24, xl: 32 })}
+			px={useBreakpointValue({ base: 4, md: 12, xl: 24 })}
 			color="white"
 			bg="primary.400"
 			position="relative"

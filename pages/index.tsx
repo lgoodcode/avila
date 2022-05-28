@@ -150,8 +150,8 @@ export default function HomePage() {
 				</Box>
 			</Center>
 
-			<Box id="locations" as="section" py={40}>
-				<VStack spacing={28} w="full" px={4}>
+			<Box id="locations" as="section" py={40} px={{ base: 4, md: 8, lg: 12 }}>
+				<VStack spacing={28} w="full">
 					<VStack
 						className="heading"
 						w="full"
