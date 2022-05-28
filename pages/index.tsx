@@ -41,7 +41,7 @@ export default function HomePage() {
 
 			<Script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></Script>
 
-			<Center as="section" id="hero" h="100vh">
+			<Box as="section" id="hero" h="100vh">
 				<Carousel
 					boxProps={{
 						position: 'absolute',
@@ -88,16 +88,16 @@ export default function HomePage() {
 					opacity={0.6}
 				/>
 
-				<Box
+				<Center
 					className="content"
 					w="full"
-					h="100vh"
+					h="full"
 					px={{ base: 4, sm: 8, lg: 0 }}
 					width={{ base: 'full', sm: 640, md: 860 }}
 					ml="auto"
 					mr={{ base: 0, sm: 12, md: 36 }}
 				>
-					<Flex h="full" alignItems="center" pt={{ base: 16, sm: 0 }}>
+					<Flex h="full" alignItems="center">
 						<VStack
 							color="white"
 							spacing={12}
@@ -143,8 +143,8 @@ export default function HomePage() {
 							</Stack>
 						</VStack>
 					</Flex>
-				</Box>
-			</Center>
+				</Center>
+			</Box>
 
 			<Box id="locations" as="section" py={40} px={{ base: 4, md: 8, lg: 12 }}>
 				<VStack spacing={28} w="full">
@@ -347,7 +347,7 @@ export default function HomePage() {
 				</Box>
 
 				<VStack spacing={28} w="full" px={{ base: 4, md: 8, lg: 12 }}>
-					<VStack w="full" spacing={12} justifyContent="center" data-aos="fade-in">
+					<VStack w="full" spacing={12} justifyContent="center" data-aos="zoom-in">
 						<Stack spacing={4} textAlign="center" direction={{ base: 'column', sm: 'row' }}>
 							<Heading color="primary.500" size="3xl">
 								Life

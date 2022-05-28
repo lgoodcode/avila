@@ -10,6 +10,8 @@ type LayoutProps = {
 
 export default function Layout({ children }: LayoutProps) {
 	const offset = useBreakpointValue({ base: 40, md: 80, lg: 120 })
+	const height = useBreakpointValue({ base: '80px', md: '90px' }) as string
+	const mobile = useBreakpointValue({ base: true, md: false }) as boolean
 
 	useEffect(() => {
 		AOS.init({
@@ -21,8 +23,8 @@ export default function Layout({ children }: LayoutProps) {
 
 	return (
 		<>
-			<Navbar />
-			<Box as="main" overflowX="hidden">
+			<Navbar height={height} mobile={mobile} />
+			<Box as="main" overflowX="hidden" position="relative" top={mobile ? height : 0}>
 				{children}
 			</Box>
 			<Footer />
