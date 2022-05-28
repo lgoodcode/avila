@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react'
 import React from 'react'
 import Footer from './Footer'
 import Navbar from './Navbar'
@@ -10,7 +11,9 @@ export default function Layout({ children }: LayoutProps) {
 	return (
 		<>
 			<Navbar />
-			<main>{children}</main>
+			<Box as="main" overflowX="hidden">
+				{children}
+			</Box>
 			<Footer />
 		</>
 	)

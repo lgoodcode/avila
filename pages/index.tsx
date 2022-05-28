@@ -9,7 +9,6 @@ import {
 	GridItem,
 	Heading,
 	HStack,
-	Icon,
 	Input,
 	Radio,
 	RadioGroup,
@@ -23,11 +22,12 @@ import Head from 'next/head'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import Script from 'next/script'
+import { Parallax } from 'react-parallax'
 import { BiUserVoice } from 'react-icons/bi'
 import { FaRegHandPaper } from 'react-icons/fa'
 import { FiEye } from 'react-icons/fi'
-import { Parallax } from 'react-parallax'
 import BlogCard from '../components/BlogCard'
+import Card from '../components/Card'
 import Carousel from '../components/Carousel'
 import Layout from '../components/Layout'
 import styles from '../styles/landing.module.css'
@@ -40,7 +40,7 @@ export default function HomePage() {
 			</Head>
 			<Script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></Script>
 
-			<Center as="section" id="hero" minH="100vh" maxH="100vh">
+			<Center as="section" id="hero" h="100vh">
 				<Carousel
 					boxProps={{
 						position: 'absolute',
@@ -190,6 +190,7 @@ export default function HomePage() {
 											alt="Bellingham location"
 											width={480}
 											height={270}
+											priority
 										/>
 										<figcaption>
 											<Text>2315 WILLIAMS STREET,</Text>
@@ -210,6 +211,7 @@ export default function HomePage() {
 											alt="Heath location"
 											width={480}
 											height={270}
+											priority
 										/>
 										<figcaption>
 											<Text>126 SMIRL DRIVE,</Text>
@@ -232,8 +234,15 @@ export default function HomePage() {
 						objectFit: 'cover',
 					}}
 				>
-					<Flex minH={600} py={24} bg="rgba(0, 0, 0, 0.6)" alignItems="center" data-aos="fade">
-						<VStack spacing={16} color="white" px={{ base: 4, md: 24, xl: 64 }}>
+					<Flex
+						minH={600}
+						py={24}
+						bg="rgba(0, 0, 0, 0.6)"
+						alignItems="center"
+						px={{ base: 4, md: 24, xl: 64 }}
+						data-aos="fade"
+					>
+						<VStack spacing={16} color="white">
 							<Text fontSize="2xl" fontStyle="italic">
 								I was a &quot;hands-on&quot; caregiver. Determined of taking care of my mother
 								myself. After 7 years I was exhausted. I knew there had to be another way. After
@@ -249,8 +258,8 @@ export default function HomePage() {
 				</Parallax>
 			</Box>
 
-			<Box id="care" as="section" py={40}>
-				<VStack spacing={32} w="full" px={4}>
+			<Box id="care" as="section" py={40} px={{ base: 4, md: 8, lg: 12 }}>
+				<VStack spacing={{ base: 24, lg: 32 }} w="full">
 					<VStack w="full" spacing={12} justifyContent="center">
 						<Stack
 							spacing={4}
@@ -304,57 +313,30 @@ export default function HomePage() {
 						spacing={{ base: 12, lg: 4, xl: 16 }}
 						textAlign="center"
 					>
-						<Box
-							className="info-card"
-							minW={320}
-							maxW={360}
-							p={4}
+						<Card
+							icon={FiEye}
+							heading="Gaze"
+							text="Gaze techniques provide healthy emotional sensations. Engaging at eye level is not only
+					warm and inviting, but a sign of humility and friendship."
 							data-aos="fade-up-right"
 							data-aos-delay="400"
-						>
-							<VStack spacing={4}>
-								<Icon as={FiEye} h={12} w={12} color="secondary.500" />
-								<Heading size="xl">Gaze</Heading>
-								<Text color="gray.700">
-									Gaze techniques provide healthy emotional sensations. Engaging at eye level is not
-									only warm and inviting, but a sign of humility and friendship.
-								</Text>
-							</VStack>
-						</Box>
-						<Box
-							className="info-card"
-							minW={320}
-							maxW={360}
-							p={4}
+						/>
+						<Card
+							icon={BiUserVoice}
+							heading="Speech"
+							text="The right tone sets the foundation for communication. Soft and pleasant.
+									Informative and caring. How we speak, sets the tone."
 							data-aos="fade-up"
-							data-aos-delay="700"
-						>
-							<VStack spacing={4}>
-								<Icon as={BiUserVoice} h={12} w={12} color="primary.500" />
-								<Heading size="xl">Speech</Heading>
-								<Text color="gray.700">
-									The right tone sets the foundation for communication. Soft and pleasant.
-									Informative and caring. How we speak, sets the tone.
-								</Text>
-							</VStack>
-						</Box>
-						<Box
-							className="info-card"
-							minW={320}
-							maxW={360}
-							p={4}
+							data-aos-delay="600"
+						/>
+						<Card
+							icon={FaRegHandPaper}
+							heading="Touch"
+							text="A warm touch is essential for quality care services. Sometime a gentle touch is
+									all that is needed to sooth a worried heart."
 							data-aos="fade-up-left"
-							data-aos-delay="900"
-						>
-							<VStack spacing={4}>
-								<Icon as={FaRegHandPaper} h={12} w={12} color="secondary.500" />
-								<Heading size="xl">Touch</Heading>
-								<Text color="gray.700">
-									A warm touch is essential for quality care services. Sometime a gentle touch is
-									all that is needed to sooth a worried heart.
-								</Text>
-							</VStack>
-						</Box>
+							data-aos-delay="800"
+						/>
 					</Stack>
 				</VStack>
 			</Box>
@@ -364,7 +346,7 @@ export default function HomePage() {
 					<Image src="/img/wave.svg" layout="fill" objectFit="cover" alt="shape svg" priority />
 				</Box>
 
-				<VStack spacing={28} w="full" px={4}>
+				<VStack spacing={28} w="full" px={{ base: 4, md: 8, lg: 12 }}>
 					<VStack w="full" spacing={12} justifyContent="center">
 						<Stack spacing={4} textAlign="center" direction={{ base: 'column', sm: 'row' }}>
 							<Heading color="primary.500" size="3xl">
@@ -406,7 +388,7 @@ export default function HomePage() {
 						templateColumns="repeat(8, 1fr)"
 						templateRows="repeat(9, 5vw)"
 						gap={4}
-						px={24}
+						px={{ base: 0, lg: 24 }}
 					>
 						<GridItem colStart={1} rowStart={1} colSpan={3} rowSpan={3}>
 							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-left">
@@ -459,6 +441,7 @@ export default function HomePage() {
 							title="How to Perform Safe Check-Ins on Seniors"
 							date="7 May 2022"
 							img="/img/blog_safe-check.jpg"
+							imgAlt="Nurse patient photo created by rawpixel.com - www.freepik.com"
 							readTime="1 min read"
 							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
 							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
@@ -466,20 +449,22 @@ export default function HomePage() {
 							data-aos-delay="200"
 						/>
 						<BlogCard
-							title="How to Perform Safe Check-Ins on Seniors"
-							date="7 May 2022"
-							img="/img/blog_safe-check.jpg"
-							readTime="1 min read"
+							title="Boosting Caregiver Health with Yoga and Meditation"
+							date="14 Mar 2022"
+							img="/img/blog_yoga.jpg"
+							imgAlt="Pranayama photo created by yanalya - www.freepik.com"
+							readTime="3 min read"
 							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
 							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
 							data-aos="fade-down"
 							data-aos-delay="500"
 						/>
 						<BlogCard
-							title="How to Perform Safe Check-Ins on Seniors"
-							date="7 May 2022"
-							img="/img/blog_safe-check.jpg"
-							readTime="1 min read"
+							title="Investigating the Financial Side of Retirement Living Space"
+							date="21 Dec 2020"
+							img="/img/blog_finance.jpg"
+							imgAlt="Money dollars photo created by frimufilms - www.freepik.com"
+							readTime="3 min read"
 							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
 							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
 							data-aos="fade-down"
@@ -494,7 +479,7 @@ export default function HomePage() {
 							py={8}
 							px={6}
 							data-aos="fade-down"
-							data-aos-delay="300"
+							data-aos-delay="100"
 						>
 							Read more
 						</Button>
@@ -502,7 +487,7 @@ export default function HomePage() {
 				</VStack>
 			</Box>
 
-			<Box id="contact" as="section" py={40} px={0}>
+			<Box id="contact" as="section" py={40} px={{ base: 4, md: 8, lg: 12 }}>
 				<VStack spacing={24} w="full">
 					<VStack w="full" spacing={12} justifyContent="center">
 						<HStack spacing={4} textAlign="center">
@@ -529,7 +514,6 @@ export default function HomePage() {
 					<Flex
 						className="locations-and-form"
 						w="full"
-						px={12}
 						justifyContent="space-around"
 						direction={{ base: 'column', lg: 'row' }}
 					>
@@ -622,8 +606,8 @@ export default function HomePage() {
 												<FormLabel htmlFor="location">Choose a location</FormLabel>
 												<RadioGroup>
 													<Stack spacing={4}>
-														<Radio value="TX">Heath, Texas</Radio>
-														<Radio value="WA">Bellingham, Washington</Radio>
+														<Radio value="TX">Heath, TX</Radio>
+														<Radio value="WA">Bellingham, WA</Radio>
 													</Stack>
 												</RadioGroup>
 											</FormControl>

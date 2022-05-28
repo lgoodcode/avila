@@ -5,6 +5,7 @@ export type BlogCardProps = {
 	title: string
 	date: string
 	img: string
+	imgAlt: string
 	readTime: string
 	description: string
 	rest?: string[]
@@ -14,6 +15,7 @@ export default function BlogCard({
 	title,
 	date,
 	img,
+	imgAlt,
 	readTime,
 	description,
 	...rest
@@ -38,12 +40,7 @@ export default function BlogCard({
 				}}
 			>
 				<Box w="full" h="full" position="relative">
-					<Image
-						src={img}
-						width={300}
-						height={200}
-						alt="Nurse patient photo created by rawpixel.com - www.freepik.com"
-					/>
+					<Image src={img} width={300} height={200} alt={imgAlt} />
 				</Box>
 
 				<Flex className="date-and-read-time" w="full" justifyContent="space-between">
