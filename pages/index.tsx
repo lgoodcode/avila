@@ -31,12 +31,16 @@ import Card from '../components/Card'
 import Carousel from '../components/Carousel'
 import Layout from '../components/Layout'
 import styles from '../styles/landing.module.css'
+import { attributes } from '../content/home.md'
 
 export default function HomePage() {
+	const { hero } = attributes as unknown as Home
+	const heroHeadingSize = useBreakpointValue({ base: 'xl', sm: '2xl', md: '3xl' })
+
 	return (
 		<Layout>
 			<Head>
-				<title>AvilaCare</title>
+				<title>{hero.title}</title>
 			</Head>
 
 			<Script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></Script>
@@ -93,9 +97,9 @@ export default function HomePage() {
 					w="full"
 					h="full"
 					px={{ base: 4, sm: 8, lg: 0 }}
-					width={{ base: 'full', sm: 640, md: 860 }}
 					ml="auto"
 					mr={{ base: 0, sm: 12, md: 36 }}
+					width={{ base: 'full', sm: 640, md: 860 }}
 				>
 					<Flex h="full" alignItems="center">
 						<VStack
@@ -105,28 +109,14 @@ export default function HomePage() {
 							textAlign={{ base: 'center', sm: 'inherit' }}
 						>
 							<VStack spacing={6} w="full">
-								<Heading
-									w="full"
-									size={useBreakpointValue({ base: 'xl', sm: '2xl', md: '3xl' })}
-									fontWeight={700}
-								>
-									Passionate about care.
-								</Heading>
-								<Heading
-									w="full"
-									size={useBreakpointValue({ base: 'xl', sm: '2xl', md: '3xl' })}
-									fontWeight={700}
-								>
-									Compassionate about people.
-								</Heading>
+								{hero.headings.map((heading) => (
+									<Heading key={heading} w="full" size={heroHeadingSize} fontWeight={700}>
+										{heading}
+									</Heading>
+								))}
 							</VStack>
 
-							<Text fontSize={{ base: 'lg', md: 'xl' }}>
-								Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua
-								nostrud aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam
-								mollit. Anim deserunt voluptate non cupidatat pariatur Lorem irure adipisicing
-								occaecat. Reprehenderit cupidatat labore ullamco labore laboris ipsum pariatur.
-							</Text>
+							<Text fontSize={{ base: 'lg', md: 'xl' }}>{hero.body}</Text>
 
 							<Stack
 								spacing={8}
@@ -134,20 +124,27 @@ export default function HomePage() {
 								w={{ base: '70%', md: 'full' }}
 								direction={{ base: 'column', sm: 'row' }}
 							>
-								<Button variant="primarySolid" px={10} py={8} fontSize="xl">
-									Call To Action
-								</Button>
-								<Button variant="primaryOutline" px={10} py={8} fontSize="xl">
-									Call To Action
-								</Button>
+								{hero.buttons.map(({ value, link }, i) => (
+									<NextLink key={i} href={link} passHref>
+										<Button
+											as="a"
+											px={10}
+											py={8}
+											fontSize="xl"
+											variant={i === 0 ? 'primarySolid' : 'primaryOutline'}
+										>
+											{value}
+										</Button>
+									</NextLink>
+								))}
 							</Stack>
 						</VStack>
 					</Flex>
 				</Center>
 			</Box>
 
-			<Box id="locations" as="section" py={40} px={{ base: 4, md: 8, lg: 12 }}>
-				<VStack spacing={28} w="full">
+			<Box id="locations" as="section" py={24} px={{ base: 4, md: 8, lg: 12 }}>
+				<VStack spacing={20} w="full">
 					<VStack
 						className="heading"
 						w="full"
@@ -181,7 +178,7 @@ export default function HomePage() {
 						data-aos-delay="100"
 					>
 						<VStack spacing={4} mb={{ base: 12, sm: 0 }}>
-							<Heading size="md">AvilaCare Senior Living in Bellingham, WA</Heading>
+							<Heading size="md">Bellingham, WA</Heading>
 							<Box>
 								<NextLink href="/location/bellingham">
 									<figure className={styles['hover-img']}>
@@ -202,7 +199,7 @@ export default function HomePage() {
 						</VStack>
 
 						<VStack spacing={4}>
-							<Heading size="md">AvilaCare Senior Living in Heath, TX</Heading>
+							<Heading size="md">Heath, TX</Heading>
 							<Box>
 								<NextLink href="/location/bellingham">
 									<figure className={styles['hover-img']}>
@@ -228,8 +225,8 @@ export default function HomePage() {
 			<Box id="quote" as="section">
 				<Parallax
 					strength={400}
-					bgImage="/img/birdview_1.jpg"
-					bgImageAlt="birdview of facility"
+					bgImage="/img/quote_background.jpg"
+					bgImageAlt="birdview of heath facility"
 					bgImageStyle={{
 						objectFit: 'cover',
 					}}
@@ -258,7 +255,7 @@ export default function HomePage() {
 				</Parallax>
 			</Box>
 
-			<Box id="care" as="section" py={40} px={{ base: 4, md: 8, lg: 12 }}>
+			<Box id="care" as="section" py={24} px={{ base: 4, md: 8, lg: 12 }}>
 				<VStack spacing={{ base: 24, lg: 32 }} w="full">
 					<VStack w="full" spacing={12} justifyContent="center">
 						<Stack
@@ -294,10 +291,10 @@ export default function HomePage() {
 							data-aos-delay="100"
 						>
 							<Text fontSize="xl" color="gray.700">
-								At AvilaCare, all our communities are 100% owned and managed by us, so don&apos;t be
-								surprised if you find one of the owners helping with meals, cleaning, tours, and
-								everything else. We have been setting the standard in senior living care for over 20
-								years.
+								At AvilaCare, all our communities are 100% owned and managed by us, so don&#39;t be
+								surprised if you find one of the owners preparing meals, cleaning, or helping with
+								anything else. We have been setting the standard in senior living care for over 20
+								years and believe in the motto &quot;lead by example&quot;.
 							</Text>
 							<Text fontSize="xl" color="gray.700">
 								We intentionally train our care staff to maximize every moment with each resident
@@ -315,6 +312,7 @@ export default function HomePage() {
 					>
 						<Card
 							icon={FiEye}
+							iconColor="secondary.500"
 							heading="Gaze"
 							text="Gaze techniques provide healthy emotional sensations. Engaging at eye level is not only
 					warm and inviting, but a sign of humility and friendship."
@@ -323,6 +321,7 @@ export default function HomePage() {
 						/>
 						<Card
 							icon={BiUserVoice}
+							iconColor="primary.500"
 							heading="Speech"
 							text="The right tone sets the foundation for communication. Soft and pleasant.
 									Informative and caring. How we speak, sets the tone."
@@ -331,6 +330,7 @@ export default function HomePage() {
 						/>
 						<Card
 							icon={FaRegHandPaper}
+							iconColor="secondary.500"
 							heading="Touch"
 							text="A warm touch is essential for quality care services. Sometime a gentle touch is
 									all that is needed to sooth a worried heart."
@@ -341,7 +341,7 @@ export default function HomePage() {
 				</VStack>
 			</Box>
 
-			<Box id="community" as="section" py={40} bg="gray.100" position="relative">
+			<Box id="community" as="section" py={24} bg="gray.100" position="relative">
 				<Box w="full" h={{ base: '20%', md: '45%' }} position="absolute" zIndex={0} bottom={-2}>
 					<Image src="/img/wave.svg" layout="fill" objectFit="cover" alt="shape svg" priority />
 				</Box>
@@ -375,10 +375,9 @@ export default function HomePage() {
 						>
 							<Text fontSize="xl" color="gray.700">
 								Too often we underestimate the power of a touch, a smile, a kind word, a listening
-								ear, an honest compliment, or the smallest act of caring, all of which have the
-								potential to turn a life around. Our communities are designed with a home-like
-								atmosphere in mind. And the culture we create is one where staff and residents are
-								the AvilaFamily.
+								ear, an honest compliment, or even the smallest act of compassion. Every one of
+								these can impact a life. We design our communities with this caring culture in mind,
+								so our residents can truly feel like they are at home.
 							</Text>
 						</VStack>
 					</VStack>
@@ -386,7 +385,7 @@ export default function HomePage() {
 					<Grid
 						w="full"
 						templateColumns="repeat(8, 1fr)"
-						templateRows="repeat(9, 5vw)"
+						templateRows="repeat(10, 5vw)"
 						gap={4}
 						px={{ base: 0, lg: 24 }}
 					>
@@ -409,21 +408,25 @@ export default function HomePage() {
 								<Image src="/img/lifestyle_activities.jpg" layout="fill" alt="activities" />
 							</Box>
 						</GridItem>
-						<GridItem colStart={1} rowStart={7} colSpan={4} rowSpan={3}>
+						<GridItem colStart={1} rowStart={7} colSpan={4} rowSpan={4}>
 							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-right">
 								<Image src="/img/lifestyle_housekeeping.jpg" layout="fill" alt="something" />
 							</Box>
 						</GridItem>
-						<GridItem colStart={5} rowStart={7} colSpan={4} rowSpan={3}>
+						<GridItem colStart={5} rowStart={7} colSpan={4} rowSpan={4}>
 							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-right">
-								<Image src="/img/lifestyle_housekeeping.jpg" layout="fill" alt="something" />
+								<Image
+									src="/img/seniors_high_five.jpg"
+									layout="fill"
+									alt="Hi five photo created by rawpixel.com - www.freepik.com"
+								/>
 							</Box>
 						</GridItem>
 					</Grid>
 				</VStack>
 			</Box>
 
-			<Box id="blogs" as="section" py={40} px={4} bg="primary.400">
+			<Box id="blogs" as="section" py={24} px={4} bg="primary.400">
 				<VStack spacing={24} w="full">
 					<Heading color="white" size="3xl" data-aos="fade-down">
 						Latest Blogs
@@ -487,9 +490,9 @@ export default function HomePage() {
 				</VStack>
 			</Box>
 
-			<Box id="contact" as="section" py={40} px={{ base: 4, md: 8, lg: 12 }}>
+			<Box id="contact" as="section" py={16} px={{ base: 4, md: 8, lg: 12 }}>
 				<VStack spacing={24} w="full">
-					<VStack w="full" spacing={12} justifyContent="center">
+					<VStack w="full" spacing={8} justifyContent="center">
 						<HStack spacing={4} textAlign="center">
 							<Heading color="primary.500" size="3xl">
 								Contact
@@ -506,7 +509,7 @@ export default function HomePage() {
 							px={{ base: 0, md: 12, lg: 16, xl: 40, '2xl': 72 }}
 						>
 							<Text fontSize="2xl" color="gray.700" fontStyle="italic">
-								&quot;The simple act of caring is heroic&quot;
+								The simple act of caring is heroic
 							</Text>
 						</VStack>
 					</VStack>
@@ -527,7 +530,7 @@ export default function HomePage() {
 										(469) 338-0283
 									</Text>
 									<Text w="full" fontSize="lg">
-										Heath@AvilaCare.com
+										heath@avilacare.com
 									</Text>
 									<Text w="full" fontSize="lg">
 										126 Smirl Drive, Heath, TX
@@ -543,7 +546,7 @@ export default function HomePage() {
 										(360) 671-3631
 									</Text>
 									<Text w="full" fontSize="lg">
-										Bellingham@AvilaCare.com
+										bellingham@avilacare.com
 									</Text>
 									<Text w="full" fontSize="lg">
 										2315 Williams St, Bellingham, WA
@@ -556,7 +559,6 @@ export default function HomePage() {
 							className="form"
 							mt={{ base: 24, lg: 0 }}
 							w={{ base: 'full', lg: 600 }}
-							px={{ base: 0, lg: 16 }}
 							justifyContent="space-around"
 							direction={{ base: 'column', lg: 'row' }}
 						>

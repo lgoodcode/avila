@@ -1,5 +1,6 @@
 import {
 	Box,
+	BoxProps,
 	Divider,
 	Heading,
 	Icon,
@@ -13,7 +14,7 @@ import {
 import NextLink from 'next/link'
 import { FaFacebookF } from 'react-icons/fa'
 
-export default function Footer() {
+export default function Footer(props: BoxProps) {
 	return (
 		<Box
 			as="footer"
@@ -22,8 +23,8 @@ export default function Footer() {
 			px={useBreakpointValue({ base: 4, md: 12, xl: 24 })}
 			color="white"
 			bg="primary.400"
-			position="relative"
 			zIndex={10}
+			{...props}
 		>
 			<VStack spacing={20} h="full">
 				<Stack w="full" spacing={{ base: 24, lg: 48 }} direction={{ base: 'column', lg: 'row' }}>
@@ -42,7 +43,7 @@ export default function Footer() {
 								</Heading>
 								<VStack className="location-info" spacing={3} w="full">
 									<Text w="full">(469) 338-0283</Text>
-									<Text w="full">Heath@AvilaCare.com</Text>
+									<Text w="full">heath@avilacare.com</Text>
 									<Text w="full">126 Smirl Drive, Heath, TX</Text>
 								</VStack>
 							</VStack>
@@ -52,7 +53,7 @@ export default function Footer() {
 								</Heading>
 								<VStack className="location-info" spacing={3} w="full">
 									<Text w="full">(360) 671-3631</Text>
-									<Text w="full">Bellingham@AvilaCare.com</Text>
+									<Text w="full">bellingham@avilacare.com</Text>
 									<Text w="full">2315 Williams St, Bellingham, WA</Text>
 								</VStack>
 							</VStack>
@@ -73,12 +74,13 @@ export default function Footer() {
 									target="_blank"
 									rel="noreferr noopener"
 								>
-									<IconButton
+									<Link w="full">Facebook</Link>
+									{/* <IconButton
 										icon={<Icon as={FaFacebookF} />}
 										aria-label="Facebook"
 										borderRadius="3xl"
 										colorScheme="facebook"
-									/>
+									/> */}
 								</NextLink>
 							</Box>
 							<NextLink href="/privacy-policy" passHref>

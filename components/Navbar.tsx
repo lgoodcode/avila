@@ -22,12 +22,12 @@ import {
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { FiMenu } from 'react-icons/fi'
-import logo from '../assets/avilacare-logo.webp'
-import NavLink from '../components/NavLink'
 import { FaHome } from 'react-icons/fa'
 import { AiFillInfoCircle } from 'react-icons/ai'
 import { BsNewspaper } from 'react-icons/bs'
 import { GrMail } from 'react-icons/gr'
+import NavLink from '../components/NavLink'
+import logo from '../assets/avilacare-logo.webp'
 
 export type NavbarProps = {
 	height: string
@@ -48,16 +48,18 @@ export default function Navbar({ height, mobile }: NavbarProps) {
 			zIndex={10}
 		>
 			<Flex h="full" alignItems="center" justifyContent="space-between">
-				<NextLink href="/" passHref>
-					<Link>
-						<Center h="full">
-							<Image src={logo} width={240} height={68} alt="AvilaCare Logo" />
-						</Center>
-					</Link>
-				</NextLink>
+				<Box data-aos="fade-right">
+					<NextLink href="/" passHref>
+						<Link>
+							<Center h="full">
+								<Image src={logo} width={240} height={68} alt="AvilaCare Logo" />
+							</Center>
+						</Link>
+					</NextLink>
+				</Box>
 
 				{!mobile ? (
-					<HStack h="full" spacing={4}>
+					<HStack h="full" spacing={4} data-aos="fade-left">
 						<HStack spacing={0} h="full">
 							<NavLink href="/">Home</NavLink>
 							<NavLink href="/about">About Us</NavLink>

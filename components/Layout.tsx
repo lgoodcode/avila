@@ -29,7 +29,7 @@ export default function Layout({ children }: LayoutProps) {
 			<Box as="main" overflowX="hidden" position="relative" top={mobile ? height : 0}>
 				{children}
 			</Box>
-			<Footer />
+			<Footer position="relative" top={mobile ? height : 0} />
 		</>
 	)
 }

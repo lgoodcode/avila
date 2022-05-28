@@ -3,8 +3,15 @@ declare module '*.md' {
 	export { attributes }
 }
 
-declare module '*.md' {
-	import React from 'react'
-	const react: React.VFC
-	export { react }
+/** Type for the home page content */
+interface Home {
+	hero: {
+		title: string
+		headings: string[]
+		body: string
+		buttons: {
+			value: string
+			link: string
+		}[]
+	}
 }
