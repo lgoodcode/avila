@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  # name: git-gateway
+  name: test-repo
   # Use a separate branch for publishing activity by the user
   branch: publishing
 # Path for media storage
@@ -23,25 +24,34 @@ collections:
             - label: Title
               name: title
               widget: string
-              
+              hint: This is the title shown in the tab in a user's browser.
+
             - label: Headings
               name: headings 
               widget: list      # List of headings
               allow_add: true   # Allow user to add or remove number of headings,
               min: 1
               max: 3
-              field: { label: Value, name: value, widget: string }
+              field: { label: Text, name: text, widget: string }
+              hint: The main headers shown on the hero of the landing page.
 
             - label: Body
               name: body
               widget: markdown 
+              hint: The main body text on the hero under the headers of the landing page.
 
             - label: Call to Actions
               name: buttons
               widget: list    
-              allow_add: true 
-              min: 1
+              allow_add: true
+              required: false
               max: 2
+              hint: Optional buttons that a user can click to redirect to another page.
               fields: 
-                - { label: Value, name: value, widget: string }
-                - { label: Link, name: link, widget: string }
+                - label: Text
+                  name: text
+                  widget: string
+                - label: Link
+                  name: link
+                  widget: string
+                  hint: The link path must be in the format of "/path-of-page"
