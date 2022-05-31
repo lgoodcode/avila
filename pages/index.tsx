@@ -18,9 +18,7 @@ import {
 	useBreakpointValue,
 	VStack,
 } from '@chakra-ui/react'
-import Head from 'next/head'
 import NextLink from 'next/link'
-import Script from 'next/script'
 import { Parallax } from 'react-parallax'
 import { BiUserVoice } from 'react-icons/bi'
 import { FaRegHandPaper } from 'react-icons/fa'
@@ -31,19 +29,44 @@ import Card from '../components/Card'
 import Carousel from '../components/Carousel'
 import Layout from '../components/Layout'
 import styles from '../styles/landing.module.css'
-import { attributes } from '../content/home.md'
 
-export default function HomePage() {
-	const { hero } = attributes as unknown as Home
+import Seo from '../components/Seo'
+import { fetchAPI } from '../lib/api'
+import { HomePageProps, PageSeo } from '../types'
+import { InferGetStaticPropsType } from 'next'
+import GradientHeading from '../components/GradientHeading'
+
+export async function getStaticProps() {
+	const { seo, ...home } = (
+		await fetchAPI('/home', {
+			populate: {
+				seo: '*',
+				hero: {
+					populate: '*',
+				},
+				locations: {
+					populate: '*',
+				},
+			},
+		})
+	).attributes
+
+	return {
+		props: {
+			seo: seo as PageSeo,
+			home: home as HomePageProps,
+		},
+	}
+}
+
+export default function HomePage({ seo, home }: InferGetStaticPropsType<typeof getStaticProps>) {
 	const heroHeadingSize = useBreakpointValue({ base: 'xl', sm: '2xl', md: '3xl' })
+
+	console.log(home)
 
 	return (
 		<Layout>
-			<Head>
-				<title>{hero.title}</title>
-			</Head>
-
-			<Script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></Script>
+			<Seo pageSeo={seo} />
 
 			<Box as="section" id="hero" h="100vh">
 				<Carousel
@@ -96,8 +119,8 @@ export default function HomePage() {
 					className="content"
 					w="full"
 					h="full"
-					px={{ base: 4, sm: 8, lg: 0 }}
 					ml="auto"
+					px={{ base: 4, sm: 8, xl: 0 }}
 					mr={{ base: 0, sm: 12, md: 36 }}
 					width={{ base: 'full', sm: 640, md: 860 }}
 				>
@@ -108,36 +131,40 @@ export default function HomePage() {
 							justifyContent="flex-start"
 							textAlign={{ base: 'center', sm: 'inherit' }}
 						>
-							<VStack spacing={6} w="full">
-								{hero.headings.map((heading) => (
-									<Heading key={heading} w="full" size={heroHeadingSize} fontWeight={700}>
-										{heading}
-									</Heading>
-								))}
-							</VStack>
+							{home.hero.headings && (
+								<VStack spacing={6} w="full">
+									{home.hero.headings.map(({ heading }) => (
+										<Heading key={heading} w="full" size={heroHeadingSize} fontWeight={700}>
+											{heading}
+										</Heading>
+									))}
+								</VStack>
+							)}
 
-							<Text fontSize={{ base: 'lg', md: 'xl' }}>{hero.body}</Text>
+							{home.hero.body && <Text fontSize={{ base: 'lg', md: 'xl' }}>{home.hero.body}</Text>}
 
-							<Stack
-								spacing={8}
-								justifyContent="start"
-								w={{ base: '70%', md: 'full' }}
-								direction={{ base: 'column', sm: 'row' }}
-							>
-								{hero.buttons.map(({ value, link }, i) => (
-									<NextLink key={i} href={link} passHref>
-										<Button
-											as="a"
-											px={10}
-											py={8}
-											fontSize="xl"
-											variant={i === 0 ? 'primarySolid' : 'primaryOutline'}
-										>
-											{value}
-										</Button>
-									</NextLink>
-								))}
-							</Stack>
+							{home.hero.call_to_actions && (
+								<Stack
+									spacing={8}
+									justifyContent="start"
+									w={{ base: '70%', md: 'full' }}
+									direction={{ base: 'column', sm: 'row' }}
+								>
+									{home.hero.call_to_actions.map(({ text, link }, i) => (
+										<NextLink key={i} href={link} passHref>
+											<Button
+												as="a"
+												px={10}
+												py={8}
+												fontSize="xl"
+												variant={i === 0 ? 'primarySolid' : 'primaryOutline'}
+											>
+												{text}
+											</Button>
+										</NextLink>
+									))}
+								</Stack>
+							)}
 						</VStack>
 					</Flex>
 				</Center>
@@ -152,14 +179,7 @@ export default function HomePage() {
 						justifyContent="center"
 						data-aos="fade-up"
 					>
-						<HStack spacing={2}>
-							<Heading color="primary.500" size={useBreakpointValue({ base: '2xl', md: '3xl' })}>
-								Community
-							</Heading>
-							<Heading color="secondary.500" size={useBreakpointValue({ base: '2xl', md: '3xl' })}>
-								Locations
-							</Heading>
-						</HStack>
+						<GradientHeading heading={home.locations.heading} />
 
 						<Box px={{ base: 0, md: 24 }}>
 							<Text fontSize="xl" textAlign="center" color="gray.700">
@@ -341,7 +361,7 @@ export default function HomePage() {
 				</VStack>
 			</Box>
 
-			<Box id="community" as="section" py={24} bg="gray.100" position="relative">
+			{/* <Box id="community" as="section" py={24} bg="gray.100" position="relative">
 				<Box w="full" h={{ base: '20%', md: '45%' }} position="absolute" zIndex={0} bottom={-2}>
 					<Image src="/img/wave.svg" layout="fill" objectFit="cover" alt="shape svg" priority />
 				</Box>
@@ -424,7 +444,7 @@ export default function HomePage() {
 						</GridItem>
 					</Grid>
 				</VStack>
-			</Box>
+			</Box> */}
 
 			<Box id="blogs" as="section" py={24} px={4} bg="primary.400">
 				<VStack spacing={24} w="full">

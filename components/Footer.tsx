@@ -3,8 +3,6 @@ import {
 	BoxProps,
 	Divider,
 	Heading,
-	Icon,
-	IconButton,
 	Link,
 	Stack,
 	Text,
@@ -12,7 +10,17 @@ import {
 	VStack,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import { FaFacebookF } from 'react-icons/fa'
+import { fetchAPI } from '../lib/api'
+
+export async function getStaticProps() {
+	const { attributes } = await fetchAPI('/home', { populate: '*' })
+
+	return {
+		props: {
+			homepage: attributes,
+		},
+	}
+}
 
 export default function Footer(props: BoxProps) {
 	return (

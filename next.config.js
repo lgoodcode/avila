@@ -6,12 +6,16 @@ module.exports = withBundleAnalyzer({
 	enabled: process.env.ANALYZE === 'true',
 })({
 	reactStrictMode: true,
-	webpack: (config) => {
-		config.module.rules.push({
-			test: /\.md$/,
-			loader: 'frontmatter-markdown-loader',
-		})
-
-		return config
+	images: {
+		loader: 'default',
+		domains: ['localhost'],
 	},
+	// async rewrites() {
+	// 	return [
+	// 		{
+	// 			source: '/api',
+	// 			destination: 'http://localhost:1337/api',
+	// 		},
+	// 	]
+	// },
 })
