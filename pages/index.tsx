@@ -36,39 +36,38 @@ import { HomePageProps, PageSeo } from '../types'
 import { InferGetStaticPropsType } from 'next'
 import GradientHeading from '../components/GradientHeading'
 
-export async function getStaticProps() {
-	const { seo, ...home } = (
-		await fetchAPI('/home', {
-			populate: {
-				seo: '*',
-				hero: {
-					populate: '*',
-				},
-				locations: {
-					populate: '*',
-				},
-			},
-		})
-	).attributes
+// export async function getStaticProps() {
+// 	const { seo, ...home } = (
+// 		await fetchAPI('/home', {
+// 			populate: {
+// 				seo: '*',
+// 				hero: {
+// 					populate: '*',
+// 				},
+// 				locations: {
+// 					populate: '*',
+// 				},
+// 			},
+// 		})
+// 	).attributes
 
-	return {
-		props: {
-			seo: seo as PageSeo,
-			home: home as HomePageProps,
-		},
-	}
-}
+// 	return {
+// 		props: {
+// 			seo: seo as PageSeo,
+// 			home: home as HomePageProps,
+// 		},
+// 	}
+// }
 
-export default function HomePage({ seo, home }: InferGetStaticPropsType<typeof getStaticProps>) {
+// export default function HomePage({ seo, home }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function HomePage() {
 	const heroHeadingSize = useBreakpointValue({ base: 'xl', sm: '2xl', md: '3xl' })
-
-	console.log(home)
 
 	return (
 		<Layout>
-			<Seo pageSeo={seo} />
+			{/* <Seo pageSeo={seo} /> */}
 
-			<Box as="section" id="hero" h="100vh">
+			{/* <Box as="section" id="hero" h="100vh">
 				<Carousel
 					boxProps={{
 						position: 'absolute',
@@ -168,9 +167,9 @@ export default function HomePage({ seo, home }: InferGetStaticPropsType<typeof g
 						</VStack>
 					</Flex>
 				</Center>
-			</Box>
+			</Box> */}
 
-			<Box id="locations" as="section" py={24} px={{ base: 4, md: 8, lg: 12 }}>
+			{/* <Box id="locations" as="section" py={24} px={{ base: 4, md: 8, lg: 12 }}>
 				<VStack spacing={20} w="full">
 					<VStack
 						className="heading"
@@ -240,7 +239,7 @@ export default function HomePage({ seo, home }: InferGetStaticPropsType<typeof g
 						</VStack>
 					</Stack>
 				</VStack>
-			</Box>
+			</Box> */}
 
 			<Box id="quote" as="section">
 				<Parallax
