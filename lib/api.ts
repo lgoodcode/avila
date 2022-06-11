@@ -1,22 +1,28 @@
 import qs from 'qs'
 import type { RequestOptions } from 'https'
-import type { StrapiResponseData } from '../types'
+
+export type PayloadResponse = {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	docs: any[]
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	[key: string]: any
+}
 
 /**
  * Get full Strapi URL from path
  * @param {string} path Path of the URL
  * @returns {string} Full Strapi URL
  */
-export function getStrapiURL(path: `/${string}`) {
-	return `${process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://localhost:1337'}${path}`
+export function getPayloadURL(path: `/${string}`) {
+	return `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL || 'http://localhost:4000'}${path}`
 }
 
 /** Used to make requests to Strapi backend */
-export async function fetchAPI(
+export async function fetchAPI<T = PayloadResponse>(
 	path: `/${string}`,
 	urlParamsObject: Record<string, unknown> = {},
 	options: RequestOptions = {}
-): Promise<StrapiResponseData> {
+): Promise<T> {
 	const mergedOptions = {
 		...options,
 		headers: {
@@ -25,21 +31,18 @@ export async function fetchAPI(
 		},
 	}
 
-	const query = qs.stringify(urlParamsObject)
-	const requestURL = `${getStrapiURL(`/api${path}${query ? `?${query}` : ''}`)}`
+	const query = qs.stringify(urlParamsObject, {
+		addQueryPrefix: true,
+	})
+	const requestURL = getPayloadURL(`/api${path}${query}`)
 	const response = await fetch(requestURL, mergedOptions)
 
 	if (!response.ok) {
-		console.error(`ERROR: [Strapi API Fetch]`, {
+		console.error('ERROR: [Payload API Fetch]', {
 			url: requestURL,
 			response,
 		})
-
-		return {
-			id: -1,
-			attributes: {},
-		}
 	}
 
-	return (await response.json()).data
+	return await response.json()
 }

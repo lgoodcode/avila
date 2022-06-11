@@ -1,9 +1,9 @@
 import { Box, useBreakpointValue } from '@chakra-ui/react'
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import AOS from 'aos'
 import dynamic from 'next/dynamic'
 import Navbar from './Navbar'
-// import Footer from './Footer'
+import { GlobalContext } from '../pages/_app'
 const Footer = dynamic(() => import('./Footer'))
 
 type LayoutProps = {
@@ -11,9 +11,10 @@ type LayoutProps = {
 }
 
 export default function Layout({ children }: LayoutProps) {
+	const { nav, footer } = useContext(GlobalContext)
 	const offset = useBreakpointValue({ base: 40, md: 80, lg: 120 })
 	const height = useBreakpointValue({ base: '80px', md: '90px' }) as string
-	const mobile = useBreakpointValue({ base: true, md: false }) as boolean
+	const mobile = useBreakpointValue({ base: true, lg: false }) as boolean
 
 	useEffect(() => {
 		AOS.init({
@@ -25,11 +26,11 @@ export default function Layout({ children }: LayoutProps) {
 
 	return (
 		<>
-			<Navbar height={height} mobile={mobile} />
+			<Navbar height={height} mobile={mobile} nav={nav} />
 			<Box as="main" overflowX="hidden" position="relative" top={mobile ? height : 0}>
 				{children}
 			</Box>
-			<Footer position="relative" top={mobile ? height : 0} />
+			<Footer footer={footer} position="relative" top={mobile ? height : 0} />
 		</>
 	)
 }

@@ -3,19 +3,22 @@ import Image from './Image'
 
 export type BlogCardProps = {
 	title: string
-	date: string
+	author?: string
+	created: string
+	updated?: string
 	img: string
 	imgAlt: string
 	placeholder?: 'blur'
 	blurDataURL?: string
-	readTime: string
+	readTime: string | number
 	description: string
 	rest?: string[]
 }
 
 export default function BlogCard({
 	title,
-	date,
+	created,
+	updated,
 	img,
 	imgAlt,
 	readTime,
@@ -28,6 +31,7 @@ export default function BlogCard({
 				maxW={360}
 				bg="white"
 				spacing={8}
+				mx={4}
 				px={6}
 				py={8}
 				mt={16}
@@ -47,10 +51,10 @@ export default function BlogCard({
 
 				<Flex className="date-and-read-time" w="full" justifyContent="space-between">
 					<Box>
-						<Text>{date}</Text>
+						<Text>{updated || created}</Text>
 					</Box>
 					<Box>
-						<Text>{readTime}</Text>
+						<Text>{readTime} minutes</Text>
 					</Box>
 				</Flex>
 
@@ -58,7 +62,9 @@ export default function BlogCard({
 					<Heading size="md">{title}</Heading>
 				</Box>
 
-				<Box className="description">{description}</Box>
+				<Box className="description">
+					<Text noOfLines={{ base: 5, lg: 7 }}>{description}</Text>
+				</Box>
 			</VStack>
 		</Box>
 	)

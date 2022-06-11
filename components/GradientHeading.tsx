@@ -1,9 +1,15 @@
-import { Stack, Heading, Center, useBreakpointValue, HStack } from '@chakra-ui/react'
+import { Center, Heading, Stack, useBreakpointValue } from '@chakra-ui/react'
 
 type GradientHeadingProps = {
 	heading: string
 }
 
+/**
+ * Takes a sentence and if even, splits in two and applies text gradient to
+ * each half. If the number of words are odd, it does the same but takes the
+ * center word and applies a gradient on it that transitions from the first
+ * to the second evenly.
+ */
 export default function GradientHeading({ heading }: GradientHeadingProps) {
 	const split = heading.split(' ')
 	const middle = Math.floor(split.length / 2)
@@ -11,15 +17,15 @@ export default function GradientHeading({ heading }: GradientHeadingProps) {
 
 	return (
 		<>
-			{middle % 2 === 1 ? (
-				<HStack spacing={2}>
+			{split.length % 2 === 0 ? (
+				<Stack spacing={2} textAlign="center" direction={{ base: 'column', sm: 'row' }}>
 					<Heading color="primary.500" size={size}>
-						{split.slice(0, middle)}
+						{split.slice(0, middle).join(' ')}
 					</Heading>
 					<Heading color="secondary.500" size={size}>
-						{split.slice(middle)}
+						{split.slice(middle).join(' ')}
 					</Heading>
-				</HStack>
+				</Stack>
 			) : (
 				<Stack
 					spacing={4}
@@ -28,7 +34,7 @@ export default function GradientHeading({ heading }: GradientHeadingProps) {
 					data-aos="fade-down"
 				>
 					<Heading color="primary.500" size="3xl">
-						{split.slice(0, middle)}
+						{split.slice(0, middle).join(' ')}
 					</Heading>
 					<Center>
 						<Heading
@@ -37,11 +43,11 @@ export default function GradientHeading({ heading }: GradientHeadingProps) {
 							bgClip="text"
 							bgGradient="linear(to-r, primary.500, secondary.500)"
 						>
-							{split.slice(middle, middle + 1)}
+							{split.slice(middle, middle + 1).toString()}
 						</Heading>
 					</Center>
 					<Heading color="secondary.500" size="3xl">
-						{split.slice(middle + 1)}
+						{split.slice(middle + 1).join(' ')}
 					</Heading>
 				</Stack>
 			)}

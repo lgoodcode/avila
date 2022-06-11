@@ -9,117 +9,108 @@ import {
 	useBreakpointValue,
 	VStack,
 } from '@chakra-ui/react'
+import { Fragment } from 'react'
 import NextLink from 'next/link'
-import { fetchAPI } from '../lib/api'
+import type { Footer } from '../types/payload-types'
 
-export async function getStaticProps() {
-	const { attributes } = await fetchAPI('/home', { populate: '*' })
+export type FooterProps = {
+	footer: Footer
+} & BoxProps
 
-	return {
-		props: {
-			homepage: attributes,
-		},
-	}
-}
-
-export default function Footer(props: BoxProps) {
+export default function Footer({ footer, ...props }: FooterProps) {
+	console.log(footer)
 	return (
 		<Box
 			as="footer"
 			w="full"
 			py={16}
-			px={useBreakpointValue({ base: 4, md: 12, xl: 24 })}
+			px={useBreakpointValue({ base: 8, md: 12, lg: 16, xl: 24 })}
 			color="white"
 			bg="primary.400"
 			zIndex={10}
 			{...props}
 		>
 			<VStack spacing={20} h="full">
-				<Stack w="full" spacing={{ base: 24, lg: 48 }} direction={{ base: 'column', lg: 'row' }}>
-					<Box className="footer-section">
-						<VStack spacing={1} mb={8}>
-							<Heading size="lg" w="full">
-								Information
-							</Heading>
-							<Divider borderBottomColor="white" borderBottomWidth="2px" />
-						</VStack>
+				{footer.other.length && (
+					<Stack w="full" spacing={{ base: 24, lg: 48 }} direction={{ base: 'column', lg: 'row' }}>
+						{footer.other.map((block) => (
+							<Fragment key={block.id}>
+								{block.blockType === 'multiple-text-header-group' &&
+									/info/i.test(block.blockName || '') && (
+										<Box className="footer-section">
+											<VStack spacing={1} mb={8}>
+												<Heading size="lg" w="full">
+													Information
+												</Heading>
+												<Divider borderBottomColor="white" borderBottomWidth="2px" />
+											</VStack>
 
-						<VStack spacing={12} w="full">
-							<VStack className="location-name" spacing={4} w="full">
-								<Heading size="md" w="full">
-									AvilaCare Heath, TX
-								</Heading>
-								<VStack className="location-info" spacing={3} w="full">
-									<Text w="full">(469) 338-0283</Text>
-									<Text w="full">heath@avilacare.com</Text>
-									<Text w="full">126 Smirl Drive, Heath, TX</Text>
-								</VStack>
-							</VStack>
-							<VStack className="location-name" spacing={4} w="full">
-								<Heading size="md" w="full">
-									AvilaCare Bellingham, WA
-								</Heading>
-								<VStack className="location-info" spacing={3} w="full">
-									<Text w="full">(360) 671-3631</Text>
-									<Text w="full">bellingham@avilacare.com</Text>
-									<Text w="full">2315 Williams St, Bellingham, WA</Text>
-								</VStack>
-							</VStack>
-						</VStack>
-					</Box>
+											<VStack spacing={12} w="full">
+												{block.groups.map(({ id, header, texts }) => (
+													<VStack key={id} className="location-name" spacing={4} w="full">
+														<Heading size="md" w="full">
+															{header}
+														</Heading>
+														<VStack className="location-info" spacing={3} w="full">
+															{texts.map(({ id, text }) => (
+																<Text key={id} w="full">
+																	{text}
+																</Text>
+															))}
+														</VStack>
+													</VStack>
+												))}
+											</VStack>
+										</Box>
+									)}
 
-					<Box className="footer-section">
-						<VStack spacing={1} mb={8}>
-							<Heading size="lg" w="full">
-								Links
-							</Heading>
-							<Divider borderBottomColor="white" borderBottomWidth="2px" />
-						</VStack>
-						<VStack spacing={5} w="full">
-							<Box w="full">
-								<NextLink
-									href="https://www.facebook.com/AvilaCare-Senior-Living-100368025759313"
-									target="_blank"
-									rel="noreferr noopener"
-								>
-									<Link w="full">Facebook</Link>
-									{/* <IconButton
-										icon={<Icon as={FaFacebookF} />}
-										aria-label="Facebook"
-										borderRadius="3xl"
-										colorScheme="facebook"
-									/> */}
-								</NextLink>
-							</Box>
-							<NextLink href="/privacy-policy" passHref>
-								<Link w="full">About Us</Link>
-							</NextLink>
-							<NextLink href="/privacy-policy" passHref>
-								<Link w="full">Blog</Link>
-							</NextLink>
-							<NextLink href="/privacy-policy" passHref>
-								<Link w="full">Privacy Policy</Link>
-							</NextLink>
-						</VStack>
-					</Box>
+								{block.blockType === 'links' && /links/i.test(block.blockName || '') && (
+									<Box className="footer-section">
+										<VStack spacing={1} mb={8}>
+											<Heading size="lg" w="full">
+												Links
+											</Heading>
+											<Divider borderBottomColor="white" borderBottomWidth="2px" />
+										</VStack>
+										<VStack spacing={5} w="full">
+											{block.links.map(({ id, type, url, label }) =>
+												type === 'page' ? (
+													<NextLink key={id} href={url} passHref>
+														<Link w="full">{label}</Link>
+													</NextLink>
+												) : (
+													<Box key={id} w="full">
+														<NextLink href={url} target="_blank" rel="noreferr noopener">
+															<Link w="full">{label}</Link>
+														</NextLink>
+													</Box>
+												)
+											)}
+										</VStack>
+									</Box>
+								)}
 
-					<Box className="footer-section">
-						<VStack spacing={1} mb={8}>
-							<Heading size="lg" w="full">
-								Locations
-							</Heading>
-							<Divider borderBottomColor="white" borderBottomWidth="2px" />
-						</VStack>
-						<VStack spacing={5} w="full">
-							<NextLink href="/locations/bellingham" passHref>
-								<Link w="full">Bellingham, WA</Link>
-							</NextLink>
-							<NextLink href="/locations/heath" passHref>
-								<Link w="full">Heath, TX</Link>
-							</NextLink>
-						</VStack>
-					</Box>
-				</Stack>
+								{block.blockType === 'links' && /locations/i.test(block.blockName || '') && (
+									<Box className="footer-section">
+										<VStack spacing={1} mb={8}>
+											<Heading size="lg" w="full">
+												Locations
+											</Heading>
+											<Divider borderBottomColor="white" borderBottomWidth="2px" />
+										</VStack>
+										<VStack spacing={5} w="full">
+											{block.links.map(({ id, url, label }) => (
+												<NextLink key={id} href={url} passHref>
+													<Link w="full">{label}</Link>
+												</NextLink>
+											))}
+										</VStack>
+									</Box>
+								)}
+							</Fragment>
+						))}
+					</Stack>
+				)}
 				<Stack
 					h="full"
 					w="full"
@@ -127,7 +118,10 @@ export default function Footer(props: BoxProps) {
 					justifyContent="space-between"
 					direction={{ base: 'column', lg: 'row' }}
 				>
-					<Text>&copy; AvilaCare 2022. All rights reserved.</Text>
+					<Text>
+						{footer.copyright ||
+							`&copy; AvilaCare ${new Date().getFullYear()}. All rights reserved.`}
+					</Text>
 					<Text pt={{ base: 8, lg: 0 }}>Developed by the pickleball runner-up</Text>
 				</Stack>
 			</VStack>

@@ -15,647 +15,708 @@ import {
 	Stack,
 	Text,
 	Textarea,
+	useBreakpoint,
 	useBreakpointValue,
 	VStack,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import { Parallax } from 'react-parallax'
+import { Fragment } from 'react'
 import { BiUserVoice } from 'react-icons/bi'
 import { FaRegHandPaper } from 'react-icons/fa'
 import { FiEye } from 'react-icons/fi'
-import Image from '../components/Image'
+import { Parallax } from 'react-parallax'
+import waveSvg from '../assets/wave.svg'
+import { fetchAPI } from '../lib/api'
 import BlogCard from '../components/BlogCard'
 import Card from '../components/Card'
 import Carousel from '../components/Carousel'
-import Layout from '../components/Layout'
-import styles from '../styles/landing.module.css'
-
-import Seo from '../components/Seo'
-import { fetchAPI } from '../lib/api'
-import { HomePageProps, PageSeo } from '../types'
-import { InferGetStaticPropsType } from 'next'
 import GradientHeading from '../components/GradientHeading'
+import Image from '../components/Image'
+import Layout from '../components/Layout'
+import Seo from '../components/Seo'
+import styles from '../styles/landing.module.css'
+import type { Blog, Page } from '../types/payload-types'
 
-// export async function getStaticProps() {
-// 	const { seo, ...home } = (
-// 		await fetchAPI('/home', {
-// 			populate: {
-// 				seo: '*',
-// 				hero: {
-// 					populate: '*',
-// 				},
-// 				locations: {
-// 					populate: '*',
-// 				},
-// 			},
-// 		})
-// 	).attributes
+export async function getStaticProps() {
+	const data = await fetchAPI('/pages', {
+		where: {
+			slug: {
+				equals: 'home',
+			},
+		},
+	})
 
-// 	return {
-// 		props: {
-// 			seo: seo as PageSeo,
-// 			home: home as HomePageProps,
-// 		},
-// 	}
-// }
+	return {
+		props: {
+			home: data.docs[0],
+		},
+	}
+}
 
-// export default function HomePage({ seo, home }: InferGetStaticPropsType<typeof getStaticProps>) {
-export default function HomePage() {
+export default function HomePage({ home }: { home: Page }) {
+	const bp = useBreakpoint()
 	const heroHeadingSize = useBreakpointValue({ base: 'xl', sm: '2xl', md: '3xl' })
 
 	return (
 		<Layout>
-			{/* <Seo pageSeo={seo} /> */}
+			<Seo pageSeo={home.meta} />
 
-			{/* <Box as="section" id="hero" h="100vh">
-				<Carousel
-					boxProps={{
-						position: 'absolute',
-						top: 0,
-						left: 0,
-						h: '100vh',
-						w: '100%',
-						zIndex: -2,
-					}}
-					images={[
-						{
-							src: '/img/landing_background_1.jpg',
-							alt: 'amily sofa photo created by gpointstudio - www.freepik.com',
-							layout: 'fill',
-							objectFit: 'cover',
-							priority: true,
-						},
-						{
-							src: '/img/landing_background_2.jpg',
-							alt: 'Asian elderly photo created by tirachardz - www.freepik.com',
-							layout: 'fill',
-							objectFit: 'cover',
-							priority: true,
-						},
-						{
-							src: '/img/landing_background_3.jpg',
-							alt: 'Hospice photo created by freepik - www.freepik.com',
-							layout: 'fill',
-							objectFit: 'cover',
-							priority: true,
-						},
-					]}
-				/>
-
-				<Box
-					className="carousel-overlay"
-					position="absolute"
-					top={0}
-					left={0}
-					minW="100%"
-					minH="100vh"
-					bg="black"
-					zIndex={-1}
-					opacity={0.6}
-				/>
-
-				<Center
-					className="content"
-					w="full"
-					h="full"
-					ml="auto"
-					px={{ base: 4, sm: 8, xl: 0 }}
-					mr={{ base: 0, sm: 12, md: 36 }}
-					width={{ base: 'full', sm: 640, md: 860 }}
-				>
-					<Flex h="full" alignItems="center">
-						<VStack
-							color="white"
-							spacing={12}
-							justifyContent="flex-start"
-							textAlign={{ base: 'center', sm: 'inherit' }}
-						>
-							{home.hero.headings && (
-								<VStack spacing={6} w="full">
-									{home.hero.headings.map(({ heading }) => (
-										<Heading key={heading} w="full" size={heroHeadingSize} fontWeight={700}>
-											{heading}
-										</Heading>
-									))}
-								</VStack>
+			{home.content.map((block) => (
+				<Fragment key={block.id}>
+					{block.blockType === 'hero' && (
+						<Box as="section" id="hero" h="100vh">
+							{!block.images?.length ? (
+								<Box
+									bg="primary.700"
+									position="absolute"
+									top={0}
+									left={0}
+									h="100vh"
+									w="100%"
+									zIndex={-2}
+								/>
+							) : (
+								<>
+									<Carousel
+										boxProps={{
+											position: 'absolute',
+											top: 0,
+											left: 0,
+											h: '100vh',
+											w: '100%',
+											zIndex: -20,
+										}}
+										images={block.images?.map(({ image: { url, alt } }) => ({
+											src: url as string,
+											alt,
+											layout: 'fill',
+											objectFit: 'cover',
+											priority: true,
+										}))}
+									/>
+									<Box
+										className="carousel-overlay"
+										position="absolute"
+										top={0}
+										left={0}
+										minW="100%"
+										minH="100vh"
+										bg="black"
+										zIndex={-10}
+										opacity={0.6}
+									/>
+								</>
 							)}
 
-							{home.hero.body && <Text fontSize={{ base: 'lg', md: 'xl' }}>{home.hero.body}</Text>}
-
-							{home.hero.call_to_actions && (
-								<Stack
-									spacing={8}
-									justifyContent="start"
-									w={{ base: '70%', md: 'full' }}
-									direction={{ base: 'column', sm: 'row' }}
+							<Center
+								className="content"
+								w="full"
+								h="full"
+								px={{ base: 4, sm: 8, xl: 0 }}
+								mx="auto"
+								mr={{ base: 'inherit', md: '5rem' }}
+								width={{ base: 'full', sm: 640, md: 900 }}
+								alignItems="center"
+							>
+								<VStack
+									w="full"
+									color="white"
+									spacing={12}
+									justifyContent="flex-start"
+									textAlign={{ base: 'center', sm: 'left' }}
 								>
-									{home.hero.call_to_actions.map(({ text, link }, i) => (
-										<NextLink key={i} href={link} passHref>
-											<Button
-												as="a"
-												px={10}
-												py={8}
-												fontSize="xl"
-												variant={i === 0 ? 'primarySolid' : 'primaryOutline'}
-											>
-												{text}
-											</Button>
-										</NextLink>
-									))}
-								</Stack>
-							)}
-						</VStack>
-					</Flex>
-				</Center>
-			</Box> */}
+									{block.headings?.length && (
+										<VStack spacing={6} w="full">
+											{block.headings.map(({ id, heading }) => (
+												<Heading
+													key={id}
+													w="full"
+													size={heroHeadingSize}
+													fontWeight={700}
+													textAlign={{ base: 'center', md: 'inherit' }}
+												>
+													{heading}
+												</Heading>
+											))}
+										</VStack>
+									)}
 
-			{/* <Box id="locations" as="section" py={24} px={{ base: 4, md: 8, lg: 12 }}>
-				<VStack spacing={20} w="full">
-					<VStack
-						className="heading"
-						w="full"
-						spacing={8}
-						justifyContent="center"
-						data-aos="fade-up"
-					>
-						<GradientHeading heading={home.locations.heading} />
+									{block.text?.length &&
+										block.text.map(({ id, body }) => (
+											<Text key={id} fontSize={{ base: 'lg', md: 'xl' }}>
+												{body}
+											</Text>
+										))}
 
-						<Box px={{ base: 0, md: 24 }}>
-							<Text fontSize="xl" textAlign="center" color="gray.700">
-								Select either our Bellingham, WA community or our Heath, TX community by clicking on
-								one of the images below.
-							</Text>
+									{block.ctas?.length && (
+										<Stack
+											spacing={8}
+											justifyContent="start"
+											w={{ base: '70%', md: 'full' }}
+											direction={{ base: 'column', md: 'row' }}
+										>
+											{block.ctas?.length &&
+												block.ctas.map(({ id, label, url }, i) => (
+													<NextLink key={id} href={url} passHref>
+														<Button
+															as="a"
+															px={10}
+															py={8}
+															fontSize="xl"
+															variant={i % 2 === 0 ? 'primarySolid' : 'primaryOutline'}
+														>
+															{label}
+														</Button>
+													</NextLink>
+												))}
+										</Stack>
+									)}
+								</VStack>
+							</Center>
 						</Box>
-					</VStack>
+					)}
 
-					<Stack
-						className="locations"
-						textAlign="center"
-						direction={{ base: 'column', lg: 'row' }}
-						spacing={{ base: 12, sm: 24, lg: 4, xl: 48 }}
-						data-aos="fade-up"
-						data-aos-delay="100"
-					>
-						<VStack spacing={4} mb={{ base: 12, sm: 0 }}>
-							<Heading size="md">Bellingham, WA</Heading>
-							<Box>
-								<NextLink href="/location/bellingham">
-									<figure className={styles['hover-img']}>
-										<Image
-											src="/img/location_bellingham.jpg"
-											alt="Bellingham location"
-											width={480}
-											height={270}
-											priority
-										/>
-										<figcaption>
-											<Text>2315 WILLIAMS STREET,</Text>
-											<Text>BELLINGHAM, WA 98225</Text>
-										</figcaption>
-									</figure>
-								</NextLink>
-							</Box>
-						</VStack>
-
-						<VStack spacing={4}>
-							<Heading size="md">Heath, TX</Heading>
-							<Box>
-								<NextLink href="/location/bellingham">
-									<figure className={styles['hover-img']}>
-										<Image
-											src="/img/location_heath.jpg"
-											alt="Heath location"
-											width={480}
-											height={270}
-											priority
-										/>
-										<figcaption>
-											<Text>126 SMIRL DRIVE,</Text>
-											<Text>HEATH, TX 75032</Text>
-										</figcaption>
-									</figure>
-								</NextLink>
-							</Box>
-						</VStack>
-					</Stack>
-				</VStack>
-			</Box> */}
-
-			<Box id="quote" as="section">
-				<Parallax
-					strength={400}
-					bgImage="/img/quote_background.jpg"
-					bgImageAlt="birdview of heath facility"
-					bgImageStyle={{
-						objectFit: 'cover',
-					}}
-				>
-					<Flex
-						minH={600}
-						py={24}
-						bg="rgba(0, 0, 0, 0.6)"
-						alignItems="center"
-						px={{ base: 4, md: 24, xl: 64 }}
-						data-aos="fade"
-					>
-						<VStack spacing={16} color="white">
-							<Text fontSize="2xl" fontStyle="italic">
-								I was a &quot;hands-on&quot; caregiver. Determined of taking care of my mother
-								myself. After 7 years I was exhausted. I knew there had to be another way. After
-								trying in-home caregivers, and another facility, someone suggested the new facility
-								in town, AvilaCare. With their help, a care team was assembled for mom. Now, after
-								10 years, I can be a daughter and trust that my mother is in the best hands that I
-								can give her. I am very thankful for AvilaCare Senior Living and the excellent care
-								they give.
-							</Text>
-							<Text fontSize="2xl"> - Patty G, Daugther</Text>
-						</VStack>
-					</Flex>
-				</Parallax>
-			</Box>
-
-			<Box id="care" as="section" py={24} px={{ base: 4, md: 8, lg: 12 }}>
-				<VStack spacing={{ base: 24, lg: 32 }} w="full">
-					<VStack w="full" spacing={12} justifyContent="center">
-						<Stack
-							spacing={4}
-							textAlign="center"
-							direction={{ base: 'column', lg: 'row' }}
-							data-aos="fade-down"
-						>
-							<Heading color="primary.500" size="3xl">
-								Assisted Living
-							</Heading>
-							<Center>
-								<Heading
-									w="fit-content"
-									size="3xl"
-									bgClip="text"
-									bgGradient="linear(to-r, primary.500, secondary.500)"
+					{/**
+					 *
+					 *	Location
+					 *
+					 */}
+					{block.blockType === 'section' && /location[s]?/i.test(block.blockName || '') && (
+						<Box id="locations" as="section" py={24} px={{ base: 8, md: 12, lg: 16 }}>
+							<VStack spacing={20} w="full">
+								<VStack
+									className="heading"
+									w="full"
+									spacing={8}
+									justifyContent="center"
+									data-aos="fade-up"
 								>
-									and
-								</Heading>
-							</Center>
-							<Heading color="secondary.500" size="3xl">
-								Memory Care
-							</Heading>
-						</Stack>
-
-						<VStack
-							w="full"
-							spacing={8}
-							textAlign="center"
-							px={{ base: 0, md: 12, lg: 16, xl: 40, '2xl': 72 }}
-							data-aos="fade-down"
-							data-aos-delay="100"
-						>
-							<Text fontSize="xl" color="gray.700">
-								At AvilaCare, all our communities are 100% owned and managed by us, so don&#39;t be
-								surprised if you find one of the owners preparing meals, cleaning, or helping with
-								anything else. We have been setting the standard in senior living care for over 20
-								years and believe in the motto &quot;lead by example&quot;.
-							</Text>
-							<Text fontSize="xl" color="gray.700">
-								We intentionally train our care staff to maximize every moment with each resident
-								and family member. Our training includes personalized techniques for every level of
-								care. Some of these unique techniques include:
-							</Text>
-						</VStack>
-					</VStack>
-
-					<Stack
-						className="info-cards"
-						direction={{ base: 'column', lg: 'row' }}
-						spacing={{ base: 12, lg: 4, xl: 16 }}
-						textAlign="center"
-					>
-						<Card
-							icon={FiEye}
-							iconColor="secondary.500"
-							heading="Gaze"
-							text="Gaze techniques provide healthy emotional sensations. Engaging at eye level is not only
-					warm and inviting, but a sign of humility and friendship."
-							data-aos="fade-up-right"
-							data-aos-delay={useBreakpointValue({ base: 200, lg: 400 })}
-						/>
-						<Card
-							icon={BiUserVoice}
-							iconColor="primary.500"
-							heading="Speech"
-							text="The right tone sets the foundation for communication. Soft and pleasant.
-									Informative and caring. How we speak, sets the tone."
-							data-aos="fade-up"
-							data-aos-delay={useBreakpointValue({ base: 300, lg: 600 })}
-						/>
-						<Card
-							icon={FaRegHandPaper}
-							iconColor="secondary.500"
-							heading="Touch"
-							text="A warm touch is essential for quality care services. Sometime a gentle touch is
-									all that is needed to sooth a worried heart."
-							data-aos="fade-up-left"
-							data-aos-delay={useBreakpointValue({ base: 400, lg: 800 })}
-						/>
-					</Stack>
-				</VStack>
-			</Box>
-
-			{/* <Box id="community" as="section" py={24} bg="gray.100" position="relative">
-				<Box w="full" h={{ base: '20%', md: '45%' }} position="absolute" zIndex={0} bottom={-2}>
-					<Image src="/img/wave.svg" layout="fill" objectFit="cover" alt="shape svg" priority />
-				</Box>
-
-				<VStack spacing={28} w="full" px={{ base: 4, md: 8, lg: 12 }}>
-					<VStack w="full" spacing={12} justifyContent="center" data-aos="zoom-in">
-						<Stack spacing={4} textAlign="center" direction={{ base: 'column', sm: 'row' }}>
-							<Heading color="primary.500" size="3xl">
-								Life
-							</Heading>
-							<Center>
-								<Heading
-									w="fit-content"
-									size="3xl"
-									bgClip="text"
-									bgGradient="linear(to-r, primary.500, secondary.500)"
-								>
-									in the
-								</Heading>
-							</Center>
-							<Heading color="secondary.500" size="3xl">
-								Community
-							</Heading>
-						</Stack>
-
-						<VStack
-							w="full"
-							spacing={8}
-							textAlign="center"
-							px={{ base: 0, md: 12, lg: 16, xl: 40, '2xl': 72 }}
-						>
-							<Text fontSize="xl" color="gray.700">
-								Too often we underestimate the power of a touch, a smile, a kind word, a listening
-								ear, an honest compliment, or even the smallest act of compassion. Every one of
-								these can impact a life. We design our communities with this caring culture in mind,
-								so our residents can truly feel like they are at home.
-							</Text>
-						</VStack>
-					</VStack>
-
-					<Grid
-						w="full"
-						templateColumns="repeat(8, 1fr)"
-						templateRows="repeat(10, 5vw)"
-						gap={4}
-						px={{ base: 0, lg: 24 }}
-					>
-						<GridItem colStart={1} rowStart={1} colSpan={3} rowSpan={3}>
-							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-left">
-								<Image
-									src="/img/lifestyle_cooking.jpg"
-									layout="fill"
-									alt="Chef cooking photo created by freepik - www.freepik.com"
-								/>
-							</Box>
-						</GridItem>
-						<GridItem colStart={4} rowStart={1} colSpan={5} rowSpan={6}>
-							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-up">
-								<Image src="/img/lifestyle_meals.jpg" layout="fill" alt="meals" />
-							</Box>
-						</GridItem>
-						<GridItem colStart={1} rowStart={4} colSpan={3} rowSpan={3}>
-							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-down">
-								<Image src="/img/lifestyle_activities.jpg" layout="fill" alt="activities" />
-							</Box>
-						</GridItem>
-						<GridItem colStart={1} rowStart={7} colSpan={4} rowSpan={4}>
-							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-right">
-								<Image src="/img/lifestyle_housekeeping.jpg" layout="fill" alt="something" />
-							</Box>
-						</GridItem>
-						<GridItem colStart={5} rowStart={7} colSpan={4} rowSpan={4}>
-							<Box w="full" h="full" objectFit="cover" position="relative" data-aos="flip-right">
-								<Image
-									src="/img/seniors_high_five.jpg"
-									layout="fill"
-									alt="Hi five photo created by rawpixel.com - www.freepik.com"
-								/>
-							</Box>
-						</GridItem>
-					</Grid>
-				</VStack>
-			</Box> */}
-
-			<Box id="blogs" as="section" py={24} px={4} bg="primary.400">
-				<VStack spacing={24} w="full">
-					<Heading color="white" size="3xl" data-aos="fade-down">
-						Latest Blogs
-					</Heading>
-
-					<Flex
-						className="blog-cards"
-						w="full"
-						mt={'24px !important'}
-						px={{ base: 0, lg: 24 }}
-						flexWrap="wrap"
-						justifyContent="space-around"
-					>
-						<BlogCard
-							title="How to Perform Safe Check-Ins on Seniors"
-							date="7 May 2022"
-							img="/img/blog_safe-check.jpg"
-							imgAlt="Nurse patient photo created by rawpixel.com - www.freepik.com"
-							readTime="1 min read"
-							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
-							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
-							data-aos="fade-down"
-							data-aos-delay={useBreakpointValue({ base: 100, lg: 200 })}
-						/>
-						<BlogCard
-							title="Boosting Caregiver Health with Yoga and Meditation"
-							date="14 Mar 2022"
-							img="/img/blog_yoga.jpg"
-							imgAlt="Pranayama photo created by yanalya - www.freepik.com"
-							readTime="3 min read"
-							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
-							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
-							data-aos="fade-down"
-							data-aos-delay={useBreakpointValue({ base: 200, lg: 500 })}
-						/>
-						<BlogCard
-							title="Investigating the Financial Side of Retirement Living Space"
-							date="21 Dec 2020"
-							img="/img/blog_finance.jpg"
-							imgAlt="Money dollars photo created by frimufilms - www.freepik.com"
-							readTime="3 min read"
-							description="Fugiat ipsum magna ad consectetur amet pariatur aute. Velit consectetur aliqua nostrud
-							aliqua ullamco reprehenderit consectetur occaecat mollit amet ad aute veniam mollit."
-							data-aos="fade-down"
-							data-aos-delay={useBreakpointValue({ base: 300, lg: 800 })}
-						/>
-					</Flex>
-
-					<Center>
-						<Button
-							bg="white"
-							fontSize="xl"
-							py={8}
-							px={6}
-							data-aos="fade-down"
-							data-aos-delay={useBreakpointValue({ base: 0, lg: 100 })}
-						>
-							Read more
-						</Button>
-					</Center>
-				</VStack>
-			</Box>
-
-			<Box id="contact" as="section" py={16} px={{ base: 4, md: 8, lg: 12 }}>
-				<VStack spacing={24} w="full">
-					<VStack w="full" spacing={8} justifyContent="center">
-						<HStack spacing={4} textAlign="center">
-							<Heading color="primary.500" size="3xl">
-								Contact
-							</Heading>
-							<Heading color="secondary.500" size="3xl">
-								Us
-							</Heading>
-						</HStack>
-
-						<VStack
-							w="full"
-							spacing={8}
-							textAlign="center"
-							px={{ base: 0, md: 12, lg: 16, xl: 40, '2xl': 72 }}
-						>
-							<Text fontSize="2xl" color="gray.700" fontStyle="italic">
-								The simple act of caring is heroic
-							</Text>
-						</VStack>
-					</VStack>
-
-					<Flex
-						className="locations-and-form"
-						w="full"
-						justifyContent="space-around"
-						direction={{ base: 'column', lg: 'row' }}
-					>
-						<VStack className="locations" spacing={12} w={{ base: 'full', lg: 600 }}>
-							<VStack className="location-name" spacing={8} w="full">
-								<Heading size="lg" w="full">
-									AvilaCare Heath, TX
-								</Heading>
-								<VStack className="location-info" spacing={6} w="full" fontWeight={500}>
-									<Text w="full" fontSize="lg">
-										(469) 338-0283
-									</Text>
-									<Text w="full" fontSize="lg">
-										heath@avilacare.com
-									</Text>
-									<Text w="full" fontSize="lg">
-										126 Smirl Drive, Heath, TX
-									</Text>
+									{/* Display single heading or multiple depending on the blockType */}
+									{block.blocks[0].blockType === 'heading' && (
+										<GradientHeading heading={block.blocks[0].heading} />
+									)}
+									{block.blocks[0].blockType === 'headings' &&
+										block.blocks[0].headings.map(({ id, heading }) => (
+											<GradientHeading key={id} heading={heading} />
+										))}
+									{block.blocks[1].blockType === 'textarea' && (
+										<Box px={{ base: 0, md: 24 }}>
+											<Text fontSize="xl" textAlign="center" color="gray.700">
+												{block.blocks[1].textarea}
+											</Text>
+										</Box>
+									)}
+									{block.blocks[1].blockType === 'textareas' && (
+										<Box px={{ base: 0, md: 24 }}>
+											{block.blocks[1].texts.map(({ id, text }) => (
+												<Text key={id} fontSize="xl" textAlign="center" color="gray.700">
+													{text}
+												</Text>
+											))}
+										</Box>
+									)}
+									)
 								</VStack>
-							</VStack>
-							<VStack className="location-name" spacing={8} w="full">
-								<Heading size="lg" w="full">
-									AvilaCare Bellingham, WA
-								</Heading>
-								<VStack className="location-info" spacing={6} w="full" fontWeight={500}>
-									<Text w="full" fontSize="lg">
-										(360) 671-3631
-									</Text>
-									<Text w="full" fontSize="lg">
-										bellingham@avilacare.com
-									</Text>
-									<Text w="full" fontSize="lg">
-										2315 Williams St, Bellingham, WA
-									</Text>
-								</VStack>
-							</VStack>
-						</VStack>
 
-						<Flex
-							className="form"
-							mt={{ base: 24, lg: 0 }}
-							w={{ base: 'full', lg: 600 }}
-							justifyContent="space-around"
-							direction={{ base: 'column', lg: 'row' }}
-						>
-							<Box w="full">
-								{/* <form onSubmit={handleSubmit} noValidate> */}
-								<form noValidate>
-									<Stack spacing={6}>
-										<Stack spacing={5}>
-											{/* <FormControl isInvalid={Boolean(errors.email)}> */}
-											<FormControl>
-												<FormLabel htmlFor="name">Name</FormLabel>
-												<Input
-													id="name"
-													type="text"
-													placeholder="Name"
-													_placeholder={{ color: 'primary.500' }}
-													// onBlur={handleBlur('name')}
-													// onChange={handleChange('name')}
-												/>
-												{/* <FormErrorMessage>{errors.name}</FormErrorMessage> */}
-											</FormControl>
-											{/* <FormControl isInvalid={Boolean(errors.name)}> */}
-											<FormControl>
-												<FormLabel htmlFor="email">Email</FormLabel>
-												<Input
-													id="email"
-													type="email"
-													placeholder="Email"
-													// onBlur={handleBlur('email')}
-													// onChange={handleChange('email')}
-												/>
-												{/* <FormErrorMessage>{errors.email}</FormErrorMessage> */}
-											</FormControl>
-											{/* <FormControl isInvalid={Boolean(errors.email)}> */}
-											<FormControl>
-												<FormLabel htmlFor="phone">Phone number</FormLabel>
-												<Input
-													id="phone"
-													type="phone"
-													placeholder="Phone number"
-													// onBlur={handleBlur('phone')}
-													// onChange={handleChange('phone')}
-												/>
-												{/* <FormErrorMessage>{errors.phone}</FormErrorMessage> */}
-											</FormControl>
-											<FormControl>
-												<FormLabel htmlFor="location">Choose a location</FormLabel>
-												<RadioGroup>
-													<Stack spacing={4}>
-														<Radio value="TX">Heath, TX</Radio>
-														<Radio value="WA">Bellingham, WA</Radio>
-													</Stack>
-												</RadioGroup>
-											</FormControl>
-											<FormControl>
-												<FormLabel htmlFor="message">Message</FormLabel>
-												<Textarea placeholder="Your message" minH={36} />
-											</FormControl>
-										</Stack>
-
-										<Stack spacing={6}>
-											<Button
-												py={6}
-												type="submit"
-												variant="primarySolid"
-												// isLoading={status === 'loading'}
-												loadingText="Submitting"
-											>
-												Send message
-											</Button>
-										</Stack>
+								{block.blocks[2].blockType === 'image-custom-multiple' && (
+									<Stack
+										className="location-images"
+										w="full"
+										textAlign="center"
+										direction={{ base: 'column', lg: 'row' }}
+										spacing={{ base: 12, sm: 24, lg: 4, xl: 48 }}
+										data-aos="fade-up"
+										data-aos-delay="100"
+									>
+										{block.blocks[2].images.map(({ id, imageField }) => (
+											<VStack key={id} w="full" spacing={4} mb={{ base: 12, sm: 0 }}>
+												<Heading size="md">{imageField?.image.name}</Heading>
+												<Box w="full" h="full" maxW={480}>
+													<NextLink href={imageField?.link?.url as string}>
+														<figure className={styles['hover-img']}>
+															<Image
+																src={imageField?.image.url as string}
+																alt={imageField?.image.alt}
+																layout="responsive"
+																priority
+															/>
+															{imageField?.hasText && (
+																<figcaption>
+																	{imageField.texts.map(({ id, text }) => (
+																		<Text key={id}>{text}</Text>
+																	))}
+																</figcaption>
+															)}
+														</figure>
+													</NextLink>
+												</Box>
+											</VStack>
+										))}
 									</Stack>
-								</form>
+								)}
+							</VStack>
+						</Box>
+					)}
+
+					{/**
+					 *
+					 *	Quote
+					 *
+					 */}
+					{block.blockType === 'section' && /quote/i.test(block.blockName || '') && (
+						<Box id="quote" as="section">
+							{block.blocks[0].blockType === 'image-custom' && (
+								<Parallax
+									strength={400}
+									bgImage={block.blocks[0].imageField?.image.url}
+									bgImageAlt={block.blocks[0].imageField?.image.alt}
+									bgImageStyle={{
+										objectFit: 'cover',
+									}}
+								>
+									<Flex
+										minH={600}
+										py={24}
+										bg="rgba(0, 0, 0, 0.6)"
+										alignItems="center"
+										px={{ base: 8, md: 12, lg: 24, xl: 32, '2xl': 64 }}
+										data-aos="fade"
+									>
+										{block.blocks[0].imageField?.texts.length && (
+											<VStack spacing={16} color="white">
+												<Text fontSize="2xl" fontStyle="italic">
+													{block.blocks[0].imageField?.texts[0].text}
+												</Text>
+												<Text fontSize="2xl">{block.blocks[0].imageField?.texts[1].text}</Text>
+											</VStack>
+										)}
+									</Flex>
+								</Parallax>
+							)}
+						</Box>
+					)}
+
+					{/**
+					 *
+					 * 	Care
+					 *
+					 */}
+					{block.blockType === 'section' && /care/i.test(block.blockName || '') && (
+						<Box id="care" as="section" py={24} px={{ base: 8, md: 12, lg: 16 }}>
+							<VStack spacing={{ base: 24, lg: 32 }} w="full">
+								<VStack w="full" spacing={12} justifyContent="center">
+									{/* Display single heading or multiple depending on the blockType */}
+									{block.blocks[0].blockType === 'heading' && (
+										<GradientHeading heading={block.blocks[0].heading} />
+									)}
+
+									{block.blocks[0].blockType === 'headings' &&
+										block.blocks[0].headings.length &&
+										block.blocks[0].headings.map(({ id, heading }) => (
+											<GradientHeading key={id} heading={heading} />
+										))}
+
+									{block.blocks[1].blockType === 'textareas' && (
+										<VStack
+											w="full"
+											spacing={8}
+											textAlign="center"
+											px={{ base: 0, md: 12, lg: 16, xl: 40, '2xl': 72 }}
+											data-aos="fade-down"
+											data-aos-delay="100"
+										>
+											{block.blocks[1].texts.map(({ id, text }) => (
+												<Text key={id} fontSize="xl" color="gray.700">
+													{text}
+												</Text>
+											))}
+										</VStack>
+									)}
+								</VStack>
+								{block.blocks[2].blockType === 'text-header-group' &&
+									block.blocks[2].groups?.length && (
+										<Stack
+											className="info-cards"
+											direction={{ base: 'column', lg: 'row' }}
+											spacing={{ base: 12, lg: 4, xl: 16 }}
+											textAlign="center"
+										>
+											{block.blocks[2].groups.map(({ id, header, text }, i) => (
+												<Card
+													key={id}
+													icon={
+														header.match(/gaze/i)
+															? FiEye
+															: header.match(/speech/i)
+															? BiUserVoice
+															: header.match(/touch/i)
+															? FaRegHandPaper
+															: undefined
+													}
+													iconColor={i % 2 === 0 ? 'secondary.500' : 'primary.500'}
+													heading={header}
+													text={text}
+													data-aos={
+														i === 0 ? 'fade-up-right' : i === 2 ? 'fade-up-left' : 'fade-up'
+													}
+													data-aos-delay={bp.match(/base|sm|md/) ? i * 200 : i * 300}
+												/>
+											))}
+										</Stack>
+									)}
+							</VStack>
+						</Box>
+					)}
+
+					{/**
+					 *
+					 * 	Community
+					 *
+					 */}
+					{block.blockType === 'section' && /community/i.test(block.blockName || '') && (
+						<Box id="community" as="section" py={24} bg="gray.100" position="relative">
+							<Box
+								w="full"
+								h={{ base: '20%', md: '45%' }}
+								position="absolute"
+								zIndex={0}
+								bottom={-2}
+							>
+								<Image src={waveSvg} layout="fill" objectFit="cover" alt="shape svg" priority />
 							</Box>
-						</Flex>
-					</Flex>
-				</VStack>
-			</Box>
+
+							{block.blocks.length && (
+								<VStack spacing={28} w="full" px={{ base: 8, md: 12, lg: 16 }}>
+									<VStack w="full" spacing={12} justifyContent="center" data-aos="zoom-in">
+										<Stack spacing={4} textAlign="center" direction={{ base: 'column', sm: 'row' }}>
+											{block.blocks[0].blockType === 'heading' && (
+												<GradientHeading heading={block.blocks[0].heading} />
+											)}
+
+											{block.blocks[0].blockType === 'headings' &&
+												block.blocks[0].headings.length &&
+												block.blocks[0].headings.map(({ id, heading }) => (
+													<GradientHeading key={id} heading={heading} />
+												))}
+										</Stack>
+
+										<VStack
+											w="full"
+											spacing={8}
+											textAlign="center"
+											px={{ base: 0, md: 12, lg: 16, xl: 40, '2xl': 72 }}
+										>
+											{block.blocks[1].blockType === 'textarea' && (
+												<Text fontSize="xl" color="gray.700">
+													{block.blocks[1].textarea}
+												</Text>
+											)}
+											{block.blocks[1].blockType === 'textareas' &&
+												block.blocks[1].texts.map(({ id, text }) => (
+													<Text key={id} fontSize="xl" color="gray.700">
+														{text}
+													</Text>
+												))}
+										</VStack>
+									</VStack>
+
+									{block.blocks[2].blockType === 'images' && (
+										<Grid
+											w="full"
+											templateColumns="repeat(6, 1fr)"
+											templateRows="repeat(9, 5vw)"
+											gap={{ base: 2, lg: 4 }}
+											px={{ base: 0, md: 12, lg: 24, xl: 44 }}
+										>
+											<GridItem colStart={1} rowStart={1} colSpan={3} rowSpan={3}>
+												<Box
+													w="full"
+													h="full"
+													objectFit="cover"
+													position="relative"
+													data-aos="flip-left"
+												>
+													<Image
+														src={block.blocks[2].images[0].image?.url as string}
+														alt={block.blocks[2].images[0].image?.alt}
+														layout="fill"
+													/>
+												</Box>
+											</GridItem>
+
+											<GridItem colStart={4} rowStart={1} colSpan={5} rowSpan={6}>
+												<Box
+													w="full"
+													h="full"
+													objectFit="cover"
+													position="relative"
+													data-aos="flip-up"
+												>
+													<Image
+														src={block.blocks[2].images[1].image?.url as string}
+														alt={block.blocks[2].images[1].image?.alt}
+														layout="fill"
+													/>
+												</Box>
+											</GridItem>
+
+											<GridItem colStart={1} rowStart={4} colSpan={3} rowSpan={3}>
+												<Box
+													w="full"
+													h="full"
+													objectFit="cover"
+													position="relative"
+													data-aos="flip-down"
+												>
+													<Image
+														src={block.blocks[2].images[2].image?.url as string}
+														alt={block.blocks[2].images[2].image?.alt}
+														layout="fill"
+													/>
+												</Box>
+											</GridItem>
+
+											<GridItem colStart={1} rowStart={7} colSpan={3} rowSpan={4}>
+												<Box
+													w="full"
+													h="full"
+													objectFit="cover"
+													position="relative"
+													data-aos="flip-right"
+												>
+													<Image
+														src={block.blocks[2].images[3].image?.url as string}
+														alt={block.blocks[2].images[3].image?.alt}
+														layout="fill"
+													/>
+												</Box>
+											</GridItem>
+
+											<GridItem colStart={4} rowStart={7} colSpan={5} rowSpan={4}>
+												<Box
+													w="full"
+													h="full"
+													objectFit="cover"
+													position="relative"
+													data-aos="flip-right"
+												>
+													<Image
+														src={block.blocks[2].images[4].image?.url as string}
+														alt={block.blocks[2].images[4].image?.alt}
+														layout="fill"
+													/>
+												</Box>
+											</GridItem>
+										</Grid>
+									)}
+								</VStack>
+							)}
+						</Box>
+					)}
+
+					{/**
+					 *
+					 * 	Blog Posts
+					 *
+					 */}
+					{block.blockType === 'blog-posts' && (
+						<Box id="blogs" as="section" py={24} px={{ base: 8, md: 12, lg: 16 }} bg="primary.400">
+							<VStack spacing={24} w="full">
+								<Heading color="white" size="3xl" data-aos="fade-down">
+									{block.heading}
+								</Heading>
+
+								<Flex
+									className="blog-cards"
+									w="full"
+									mt={'24px !important'}
+									px={{ base: 0, lg: 24 }}
+									flexWrap="wrap"
+									justifyContent="space-around"
+								>
+									{(block.posts as Blog[]).map((post, i) => (
+										<BlogCard
+											key={post.id}
+											title={post.title}
+											created={post.created as string}
+											updated={post.updated}
+											img={post.image.url as string}
+											imgAlt={post.image.alt}
+											readTime={post.readTime}
+											description={post.content[0].text}
+											data-aos="fade-down"
+											data-aos-delay={bp.match(/base|sm|md/) ? i * 100 : i * 200}
+										/>
+									))}
+								</Flex>
+
+								<Center>
+									<Button
+										bg="white"
+										fontSize="xl"
+										py={8}
+										px={6}
+										data-aos="fade-down"
+										data-aos-delay={bp.match(/base|sm|md/) ? 0 : 100}
+									>
+										Read more
+									</Button>
+								</Center>
+							</VStack>
+						</Box>
+					)}
+
+					{/**
+					 *
+					 * 	Contact
+					 *
+					 */}
+					{block.blockType === 'section' && /contact/i.test(block.blockName || '') && (
+						<Box id="contact" as="section" py={16} mx={{ base: 8, md: 12, lg: 16 }}>
+							<VStack spacing={24} w="full">
+								<VStack w="full" spacing={8} justifyContent="center">
+									<HStack spacing={4} textAlign="center">
+										<Heading color="primary.500" size="3xl">
+											Contact
+										</Heading>
+										<Heading color="secondary.500" size="3xl">
+											Us
+										</Heading>
+									</HStack>
+
+									<VStack
+										w="full"
+										spacing={8}
+										textAlign="center"
+										px={{ base: 0, md: 12, lg: 16, xl: 40, '2xl': 72 }}
+									>
+										<Text fontSize="2xl" color="gray.700" fontStyle="italic">
+											The simple act of caring is heroic
+										</Text>
+									</VStack>
+								</VStack>
+
+								<Flex
+									className="locations-and-form"
+									w="full"
+									justifyContent="space-around"
+									direction={{ base: 'column', lg: 'row' }}
+								>
+									{block.blocks[0].blockType === 'multiple-text-header-group' && (
+										<VStack
+											className="locations"
+											spacing={12}
+											w={{ base: 'full', lg: 600 }}
+											textAlign={
+												block.blocks[1].blockType === 'contact-form' && !block.blocks[1].useForm
+													? 'center'
+													: 'inherit'
+											}
+										>
+											{block.blocks[0].groups.map(({ id, header, texts }) => (
+												<VStack key={id} className="location-name" spacing={8} w="full">
+													<Heading size="lg" w="full">
+														{header}
+													</Heading>
+													<VStack className="location-info" spacing={6} w="full" fontWeight={500}>
+														{texts.map(({ id, text }) => (
+															<Text key={id} w="full" fontSize="lg">
+																{text}
+															</Text>
+														))}
+													</VStack>
+												</VStack>
+											))}
+										</VStack>
+									)}
+
+									{block.blocks[1].blockType === 'contact-form' && block.blocks[1].useForm && (
+										<Flex
+											className="form"
+											mt={{ base: 24, lg: 0 }}
+											w={{ base: 'full', lg: 600 }}
+											justifyContent="space-around"
+											direction={{ base: 'column', lg: 'row' }}
+										>
+											<Box w="full">
+												{/* <form onSubmit={handleSubmit} noValidate> */}
+												<form noValidate>
+													<Stack spacing={6}>
+														<Stack spacing={5}>
+															{/* <FormControl isInvalid={Boolean(errors.email)}> */}
+															<FormControl>
+																<FormLabel htmlFor="name">Name</FormLabel>
+																<Input
+																	id="name"
+																	type="text"
+																	placeholder="Name"
+																	_placeholder={{ color: 'primary.500' }}
+																	// onBlur={handleBlur('name')}
+																	// onChange={handleChange('name')}
+																/>
+																{/* <FormErrorMessage>{errors.name}</FormErrorMessage> */}
+															</FormControl>
+															{/* <FormControl isInvalid={Boolean(errors.name)}> */}
+															<FormControl>
+																<FormLabel htmlFor="email">Email</FormLabel>
+																<Input
+																	id="email"
+																	type="email"
+																	placeholder="Email"
+																	// onBlur={handleBlur('email')}
+																	// onChange={handleChange('email')}
+																/>
+																{/* <FormErrorMessage>{errors.email}</FormErrorMessage> */}
+															</FormControl>
+															{/* <FormControl isInvalid={Boolean(errors.email)}> */}
+															<FormControl>
+																<FormLabel htmlFor="phone">Phone number</FormLabel>
+																<Input
+																	id="phone"
+																	type="phone"
+																	placeholder="Phone number"
+																	// onBlur={handleBlur('phone')}
+																	// onChange={handleChange('phone')}
+																/>
+																{/* <FormErrorMessage>{errors.phone}</FormErrorMessage> */}
+															</FormControl>
+															<FormControl>
+																<FormLabel htmlFor="location">Choose a location</FormLabel>
+																<RadioGroup>
+																	<Stack spacing={4}>
+																		<Radio value="TX">Heath, TX</Radio>
+																		<Radio value="WA">Bellingham, WA</Radio>
+																	</Stack>
+																</RadioGroup>
+															</FormControl>
+															<FormControl>
+																<FormLabel htmlFor="message">Message</FormLabel>
+																<Textarea placeholder="Your message" minH={36} />
+															</FormControl>
+														</Stack>
+
+														<Stack spacing={6}>
+															<Button
+																py={6}
+																type="submit"
+																variant="primarySolid"
+																// isLoading={status === 'loading'}
+																loadingText="Submitting"
+															>
+																Send message
+															</Button>
+														</Stack>
+													</Stack>
+												</form>
+											</Box>
+										</Flex>
+									)}
+								</Flex>
+							</VStack>
+						</Box>
+					)}
+				</Fragment>
+			))}
 		</Layout>
 	)
 }
