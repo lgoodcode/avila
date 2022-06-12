@@ -1,5 +1,6 @@
 import qs from 'qs'
 import type { RequestOptions } from 'https'
+import type { Media } from '../types/payload-types'
 
 export type PayloadResponse = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -14,7 +15,7 @@ export type PayloadResponse = {
  * @returns {string} Full Strapi URL
  */
 export function getPayloadURL(path: `/${string}`) {
-	return `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL || 'http://localhost:4000'}${path}`
+	return `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}${path}`
 }
 
 /** Used to make requests to Strapi backend */
@@ -45,4 +46,10 @@ export async function fetchAPI<T = PayloadResponse>(
 	}
 
 	return await response.json()
+}
+
+export function getMediaURL(image: Media | string) {
+	const baseURL = process.env.NEXT_PUBLIC_IMG_URL
+	const filename = typeof image === 'string' ? image : image.filename
+	return `${baseURL}${baseURL?.endsWith('/') ? '' : '/'}${filename}`
 }

@@ -1,5 +1,14 @@
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "build".
+ */
+export interface Build {
+	id: string
+	build: boolean
+	status?: string
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "nav".
  */
 export interface Navigation {
@@ -89,22 +98,14 @@ export interface Page {
 				blockType: 'headings'
 		  }
 		| {
-<<<<<<< HEAD
 				image?: Media
-=======
-				image?: string | Media
->>>>>>> parent of 6f88245 (Merge branch 'main' of https://github.com/lgoodcode/avila)
 				id?: string
 				blockName?: string
 				blockType: 'image'
 		  }
 		| {
 				images: {
-<<<<<<< HEAD
 					image?: Media
-=======
-					image?: string | Media
->>>>>>> parent of 6f88245 (Merge branch 'main' of https://github.com/lgoodcode/avila)
 					id?: string
 				}[]
 				id?: string
@@ -113,11 +114,7 @@ export interface Page {
 		  }
 		| {
 				imageField?: {
-<<<<<<< HEAD
 					image: Media
-=======
-					image: string | Media
->>>>>>> parent of 6f88245 (Merge branch 'main' of https://github.com/lgoodcode/avila)
 					hasText?: boolean
 					texts: {
 						text: string
@@ -138,11 +135,7 @@ export interface Page {
 		| {
 				images: {
 					imageField?: {
-<<<<<<< HEAD
 						image: Media
-=======
-						image: string | Media
->>>>>>> parent of 6f88245 (Merge branch 'main' of https://github.com/lgoodcode/avila)
 						hasText?: boolean
 						texts: {
 							text: string
@@ -266,11 +259,7 @@ export interface Page {
 		  }
 		| {
 				images?: {
-<<<<<<< HEAD
 					image: Media
-=======
-					image: string | Media
->>>>>>> parent of 6f88245 (Merge branch 'main' of https://github.com/lgoodcode/avila)
 					id?: string
 				}[]
 				headings?: {
@@ -354,22 +343,14 @@ export interface Page {
 							blockType: 'headings'
 					  }
 					| {
-<<<<<<< HEAD
 							image?: Media
-=======
-							image?: string | Media
->>>>>>> parent of 6f88245 (Merge branch 'main' of https://github.com/lgoodcode/avila)
 							id?: string
 							blockName?: string
 							blockType: 'image'
 					  }
 					| {
 							images: {
-<<<<<<< HEAD
 								image?: Media
-=======
-								image?: string | Media
->>>>>>> parent of 6f88245 (Merge branch 'main' of https://github.com/lgoodcode/avila)
 								id?: string
 							}[]
 							id?: string
@@ -378,11 +359,7 @@ export interface Page {
 					  }
 					| {
 							imageField?: {
-<<<<<<< HEAD
 								image: Media
-=======
-								image: string | Media
->>>>>>> parent of 6f88245 (Merge branch 'main' of https://github.com/lgoodcode/avila)
 								hasText?: boolean
 								texts: {
 									text: string
@@ -403,11 +380,7 @@ export interface Page {
 					| {
 							images: {
 								imageField?: {
-<<<<<<< HEAD
 									image: Media
-=======
-									image: string | Media
->>>>>>> parent of 6f88245 (Merge branch 'main' of https://github.com/lgoodcode/avila)
 									hasText?: boolean
 									texts: {
 										text: string
@@ -568,20 +541,12 @@ export interface Blog {
 		description?: string
 		keywords?: string
 	}
-<<<<<<< HEAD
 	image: Media
-=======
-	image: string | Media
->>>>>>> parent of 6f88245 (Merge branch 'main' of https://github.com/lgoodcode/avila)
 	readTime: number
 	content: {
 		hasImage: boolean
 		imageField?: {
-<<<<<<< HEAD
 			image: Media
-=======
-			image: string | Media
->>>>>>> parent of 6f88245 (Merge branch 'main' of https://github.com/lgoodcode/avila)
 			hasText?: boolean
 			texts: {
 				text: string
@@ -664,13 +629,8 @@ export interface Seo {
 	id: string
 	siteName: string
 	description: string
-<<<<<<< HEAD
 	favicon: Media
 	image?: Media
-=======
-	favicon: string | Media
-	image?: string | Media
->>>>>>> parent of 6f88245 (Merge branch 'main' of https://github.com/lgoodcode/avila)
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

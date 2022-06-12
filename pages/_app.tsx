@@ -2,7 +2,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { createContext } from 'react'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
-import { fetchAPI } from '../lib/api'
+import { fetchAPI, getMediaURL } from '../lib/api'
 import Hydrate from '../components/Hydrate'
 import theme from '../theme'
 import type { Seo, Navigation, Footer } from '../types/payload-types'
@@ -28,7 +28,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 		<ChakraProvider theme={theme}>
 			<Hydrate>
 				<Head>
-					<link rel="shortcut icon" href={favicon.url} />
+					{favicon && <link rel="shortcut icon" href={getMediaURL(favicon)} />}
 					{/* Prevent mobile from zooming in with pinch - not to be used in _document.js */}
 					<meta
 						name="viewport"

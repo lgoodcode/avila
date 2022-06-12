@@ -25,8 +25,7 @@ import { BiUserVoice } from 'react-icons/bi'
 import { FaRegHandPaper } from 'react-icons/fa'
 import { FiEye } from 'react-icons/fi'
 import { Parallax } from 'react-parallax'
-import waveSvg from '../assets/wave.svg'
-import { fetchAPI } from '../lib/api'
+import { fetchAPI, getMediaURL } from '../lib/api'
 import BlogCard from '../components/BlogCard'
 import Card from '../components/Card'
 import Carousel from '../components/Carousel'
@@ -35,7 +34,8 @@ import Image from '../components/Image'
 import Layout from '../components/Layout'
 import Seo from '../components/Seo'
 import styles from '../styles/landing.module.css'
-import type { Blog, Page } from '../types/payload-types'
+import waveSvg from '../assets/wave.svg'
+import type { Blog, Media, Page } from '../types/payload-types'
 
 export async function getStaticProps() {
 	const data = await fetchAPI('/pages', {
@@ -86,9 +86,9 @@ export default function HomePage({ home }: { home: Page }) {
 											w: '100%',
 											zIndex: -20,
 										}}
-										images={block.images?.map(({ image: { url, alt } }) => ({
-											src: url as string,
-											alt,
+										images={block.images?.map(({ image }) => ({
+											src: getMediaURL(image),
+											alt: image.alt,
 											layout: 'fill',
 											objectFit: 'cover',
 											priority: true,
@@ -228,30 +228,33 @@ export default function HomePage({ home }: { home: Page }) {
 										data-aos="fade-up"
 										data-aos-delay="100"
 									>
-										{block.blocks[2].images.map(({ id, imageField }) => (
-											<VStack key={id} w="full" spacing={4} mb={{ base: 12, sm: 0 }}>
-												<Heading size="md">{imageField?.image.name}</Heading>
-												<Box w="full" h="full" maxW={480}>
-													<NextLink href={imageField?.link?.url as string}>
-														<figure className={styles['hover-img']}>
-															<Image
-																src={imageField?.image.url as string}
-																alt={imageField?.image.alt}
-																layout="responsive"
-																priority
-															/>
-															{imageField?.hasText && (
-																<figcaption>
-																	{imageField.texts.map(({ id, text }) => (
-																		<Text key={id}>{text}</Text>
-																	))}
-																</figcaption>
-															)}
-														</figure>
-													</NextLink>
-												</Box>
-											</VStack>
-										))}
+										{block.blocks[2].images.map(
+											({ id, imageField }) =>
+												imageField && (
+													<VStack key={id} w="full" spacing={4} mb={{ base: 12, sm: 0 }}>
+														<Heading size="md">{imageField?.image.name}</Heading>
+														<Box w="full" h="full" maxW={480}>
+															<NextLink href={imageField?.link?.url as string}>
+																<figure className={styles['hover-img']}>
+																	<Image
+																		src={getMediaURL(imageField.image)}
+																		alt={imageField?.image.alt}
+																		layout="responsive"
+																		priority
+																	/>
+																	{imageField?.hasText && (
+																		<figcaption>
+																			{imageField.texts.map(({ id, text }) => (
+																				<Text key={id}>{text}</Text>
+																			))}
+																		</figcaption>
+																	)}
+																</figure>
+															</NextLink>
+														</Box>
+													</VStack>
+												)
+										)}
 									</Stack>
 								)}
 							</VStack>
@@ -268,7 +271,7 @@ export default function HomePage({ home }: { home: Page }) {
 							{block.blocks[0].blockType === 'image-custom' && (
 								<Parallax
 									strength={400}
-									bgImage={block.blocks[0].imageField?.image.url}
+									bgImage={getMediaURL(block.blocks[0].imageField?.image as Media)}
 									bgImageAlt={block.blocks[0].imageField?.image.alt}
 									bgImageStyle={{
 										objectFit: 'cover',
@@ -437,7 +440,7 @@ export default function HomePage({ home }: { home: Page }) {
 													data-aos="flip-left"
 												>
 													<Image
-														src={block.blocks[2].images[0].image?.url as string}
+														src={getMediaURL(block.blocks[2].images[0].image as Media)}
 														alt={block.blocks[2].images[0].image?.alt}
 														layout="fill"
 													/>
@@ -453,7 +456,7 @@ export default function HomePage({ home }: { home: Page }) {
 													data-aos="flip-up"
 												>
 													<Image
-														src={block.blocks[2].images[1].image?.url as string}
+														src={getMediaURL(block.blocks[2].images[1].image as Media)}
 														alt={block.blocks[2].images[1].image?.alt}
 														layout="fill"
 													/>
@@ -469,7 +472,7 @@ export default function HomePage({ home }: { home: Page }) {
 													data-aos="flip-down"
 												>
 													<Image
-														src={block.blocks[2].images[2].image?.url as string}
+														src={getMediaURL(block.blocks[2].images[2].image as Media)}
 														alt={block.blocks[2].images[2].image?.alt}
 														layout="fill"
 													/>
@@ -485,7 +488,7 @@ export default function HomePage({ home }: { home: Page }) {
 													data-aos="flip-right"
 												>
 													<Image
-														src={block.blocks[2].images[3].image?.url as string}
+														src={getMediaURL(block.blocks[2].images[3].image as Media)}
 														alt={block.blocks[2].images[3].image?.alt}
 														layout="fill"
 													/>
@@ -501,7 +504,7 @@ export default function HomePage({ home }: { home: Page }) {
 													data-aos="flip-right"
 												>
 													<Image
-														src={block.blocks[2].images[4].image?.url as string}
+														src={getMediaURL(block.blocks[2].images[4].image as Media)}
 														alt={block.blocks[2].images[4].image?.alt}
 														layout="fill"
 													/>
@@ -540,7 +543,7 @@ export default function HomePage({ home }: { home: Page }) {
 											title={post.title}
 											created={post.created as string}
 											updated={post.updated}
-											img={post.image.url as string}
+											img={getMediaURL(post.image)}
 											imgAlt={post.image.alt}
 											readTime={post.readTime}
 											description={post.content[0].text}

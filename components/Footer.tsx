@@ -18,7 +18,6 @@ export type FooterProps = {
 } & BoxProps
 
 export default function Footer({ footer, ...props }: FooterProps) {
-	console.log(footer)
 	return (
 		<Box
 			as="footer"
@@ -80,7 +79,7 @@ export default function Footer({ footer, ...props }: FooterProps) {
 													</NextLink>
 												) : (
 													<Box key={id} w="full">
-														<NextLink href={url} target="_blank" rel="noreferr noopener">
+														<NextLink href={url} passHref target="_blank" rel="noreferr noopener">
 															<Link w="full">{label}</Link>
 														</NextLink>
 													</Box>

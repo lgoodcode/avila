@@ -1,6 +1,18 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const withBundleAnalyzer = require('@next/bundle-analyzer')
 
+if (!process.env.NEXT_PUBLIC_PAYLOAD_API_URL) {
+	throw new Error(
+		`[env] NEXT_PUBLIC_PAYLOAD_API_URL must be specified. Recieved: ${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}`
+	)
+}
+
+if (!process.env.NEXT_PUBLIC_IMG_URL) {
+	throw new Error(
+		`[env] NEXT_PUBLIC_IMG_URL must be specified. Recieved: ${process.env.NEXT_PUBLIC_IMG_URL}`
+	)
+}
+
 /** @type {import('next').NextConfig} */
 module.exports = withBundleAnalyzer({
 	enabled: process.env.ANALYZE === 'true',
@@ -8,7 +20,7 @@ module.exports = withBundleAnalyzer({
 	reactStrictMode: true,
 	images: {
 		loader: 'default',
-		domains: ['localhost'],
+		domains: ['localhost', process.env.NEXT_PUBLIC_IMG_URL.replace(/^http[s]?:\/\//, '')],
 	},
 	async rewrites() {
 		return [
@@ -16,17 +28,10 @@ module.exports = withBundleAnalyzer({
 				source: '/home',
 				destination: '/',
 			},
-<<<<<<< HEAD
 			{
 				source: '/api',
 				destination: `${process.env.NEXT_PUBLIC_PAYLOAD_API_URL}/api`,
 			},
-=======
-			// {
-			// 	source: '/api',
-			// 	destination: 'http://localhost:1337/api',
-			// },
->>>>>>> parent of 6f88245 (Merge branch 'main' of https://github.com/lgoodcode/avila)
 		]
 	},
 })
