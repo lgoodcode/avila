@@ -39,10 +39,7 @@ export async function fetchAPI<T = PayloadResponse>(
 	const response = await fetch(requestURL, mergedOptions)
 
 	if (!response.ok) {
-		console.error('ERROR: [Payload API Fetch]', {
-			url: requestURL,
-			response,
-		})
+		throw new Error(`[Payload API Fetch] request URL: ${requestURL}`)
 	}
 
 	return await response.json()

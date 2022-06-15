@@ -1,4 +1,4 @@
-import { Box, Heading, Icon, Text, VStack } from '@chakra-ui/react'
+import { Box, Heading, Icon, Text, VStack, useColorModeValue } from '@chakra-ui/react'
 import type { IconType } from 'react-icons'
 
 export type CardProps = {
@@ -24,7 +24,7 @@ export default function Card({
 			<VStack spacing={4}>
 				{icon && <Icon as={icon} h={12} w={12} color={iconColor} />}
 				<Heading size="xl">{heading}</Heading>
-				<Text color="gray.700">{text}</Text>
+				<Text color={useColorModeValue('gray.700', 'whiteAlpha.800')}>{text}</Text>
 			</VStack>
 		</Box>
 	)

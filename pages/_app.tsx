@@ -1,13 +1,14 @@
 import { ChakraProvider } from '@chakra-ui/react'
-import { createContext } from 'react'
+import 'aos/dist/aos.css'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
-import { fetchAPI, getMediaURL } from '../lib/api'
+import { createContext } from 'react'
 import Hydrate from '../components/Hydrate'
-import theme from '../theme'
-import type { Seo, Navigation, Footer } from '../types/payload-types'
+import { fetchAPI, getMediaURL } from '../lib/api'
 import 'aos/dist/aos.css'
 import '../styles/global.css'
+import theme from '../theme'
+import type { Footer, Navigation, Seo } from '../types/payload-types'
 
 export type GlobalContextType = {
 	seo: Seo

@@ -13,9 +13,9 @@ import { Fragment } from 'react'
 import NextLink from 'next/link'
 import type { Footer } from '../types/payload-types'
 
-export type FooterProps = {
+export interface FooterProps extends BoxProps {
 	footer: Footer
-} & BoxProps
+}
 
 export default function Footer({ footer, ...props }: FooterProps) {
 	return (
@@ -34,7 +34,7 @@ export default function Footer({ footer, ...props }: FooterProps) {
 					<Stack w="full" spacing={{ base: 24, lg: 48 }} direction={{ base: 'column', lg: 'row' }}>
 						{footer.other.map((block) => (
 							<Fragment key={block.id}>
-								{block.blockType === 'multiple-text-header-group' &&
+								{/multiple-text-header-group|multiple-link-text-group/.test(block.blockType) &&
 									/info/i.test(block.blockName || '') && (
 										<Box className="footer-section">
 											<VStack spacing={1} mb={8}>
@@ -43,22 +43,49 @@ export default function Footer({ footer, ...props }: FooterProps) {
 												</Heading>
 												<Divider borderBottomColor="white" borderBottomWidth="2px" />
 											</VStack>
-
 											<VStack spacing={12} w="full">
-												{block.groups.map(({ id, header, texts }) => (
-													<VStack key={id} className="location-name" spacing={4} w="full">
-														<Heading size="md" w="full">
-															{header}
-														</Heading>
-														<VStack className="location-info" spacing={3} w="full">
-															{texts.map(({ id, text }) => (
-																<Text key={id} w="full">
-																	{text}
-																</Text>
-															))}
+												{block.blockType === 'multiple-link-text-group' &&
+													block.groups.map(({ id, header, links }) => (
+														<VStack key={id} className="location-name" spacing={4} w="full">
+															<Heading size="md" w="full">
+																{header}
+															</Heading>
+															<VStack className="location-info" spacing={3} w="full">
+																{links.map(({ id, text, isLink, url }) =>
+																	!isLink ? (
+																		<Text key={id} w="full">
+																			{text}
+																		</Text>
+																	) : (
+																		<NextLink
+																			key={id}
+																			href={url}
+																			passHref
+																			target="_blank"
+																			rel="noreferr noopener"
+																		>
+																			<Link>{text}</Link>
+																		</NextLink>
+																	)
+																)}
+															</VStack>
 														</VStack>
-													</VStack>
-												))}
+													))}
+												{block.blockType === 'multiple-text-header-group' &&
+													block.groups.map(({ id, header, texts }) => (
+														<VStack key={id} className="location-name" spacing={4} w="full">
+															<Heading size="md" w="full">
+																{header}
+															</Heading>
+															<VStack className="location-info" spacing={3} w="full">
+																{texts.map(({ id, text }) => (
+																	<Text key={id} w="full">
+																		{text}
+																	</Text>
+																))}
+															</VStack>
+														</VStack>
+													))}
 											</VStack>
 										</Box>
 									)}

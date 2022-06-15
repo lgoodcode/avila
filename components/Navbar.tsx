@@ -1,9 +1,22 @@
-import { Box, Button, Center, Flex, HStack, Link, useBreakpointValue } from '@chakra-ui/react'
+import {
+	Box,
+	Button,
+	Center,
+	Flex,
+	HStack,
+	Icon,
+	IconButton,
+	Link,
+	useBreakpointValue,
+	useColorMode,
+	useColorModeValue,
+} from '@chakra-ui/react'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import MobileNav from './MobileNav'
 import logo from '../assets/avilacare-logo.webp'
 import type { Navigation } from '../types/payload-types'
+import { FaMoon, FaSun } from 'react-icons/fa'
 
 export type NavbarProps = {
 	nav: Navigation
@@ -12,13 +25,17 @@ export type NavbarProps = {
 }
 
 export default function MyNavbar({ nav, height, mobile }: NavbarProps) {
+	const { colorMode, toggleColorMode } = useColorMode()
+	const buttonBg = useColorModeValue('whiteAlpha.800', 'whiteAlpha.300')
+	const buttonHover = { bg: useColorModeValue('whiteAlpha.900', 'whiteAlpha.400') }
 	return (
 		<Box
 			as="nav"
 			w="full"
 			h={height}
-			px={useBreakpointValue({ base: 4, lg: 24, xl: 32 })}
-			bg="white"
+			px={useBreakpointValue({ base: 4, lg: 12, xl: 28 })}
+			bg={useColorModeValue('white', 'gray.800')}
+			// bg="white"
 			position="absolute"
 			zIndex={10}
 		>
@@ -46,7 +63,7 @@ export default function MyNavbar({ nav, height, mobile }: NavbarProps) {
 										display="flex"
 										alignItems="center"
 										justifyContent="center"
-										fontSize="lg"
+										fontSize="20px"
 										_hover={{
 											bg: 'gray.100',
 										}}
@@ -63,6 +80,14 @@ export default function MyNavbar({ nav, height, mobile }: NavbarProps) {
 								</Button>
 							</NextLink>
 						))}
+						<IconButton
+							size="lg"
+							onClick={toggleColorMode}
+							aria-label={colorMode === 'light' ? 'dark-mode' : 'light-mode'}
+							icon={colorMode === 'light' ? <Icon as={FaMoon} /> : <Icon as={FaSun} />}
+							bg={buttonBg}
+							_hover={buttonHover}
+						/>
 					</HStack>
 				)}
 			</Flex>

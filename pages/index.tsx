@@ -17,6 +17,8 @@ import {
 	Textarea,
 	useBreakpoint,
 	useBreakpointValue,
+	useColorMode,
+	useColorModeValue,
 	VStack,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
@@ -56,6 +58,8 @@ export async function getStaticProps() {
 export default function HomePage({ home }: { home: Page }) {
 	const bp = useBreakpoint()
 	const heroHeadingSize = useBreakpointValue({ base: 'xl', sm: '2xl', md: '3xl' })
+	const descTextColor = useColorModeValue('gray.700', 'whiteAlpha.800')
+	const { colorMode } = useColorMode()
 
 	return (
 		<Layout>
@@ -79,6 +83,7 @@ export default function HomePage({ home }: { home: Page }) {
 								<>
 									<Carousel
 										boxProps={{
+											bg: 'primary.500',
 											position: 'absolute',
 											top: 0,
 											left: 0,
@@ -201,7 +206,7 @@ export default function HomePage({ home }: { home: Page }) {
 										))}
 									{block.blocks[1].blockType === 'textarea' && (
 										<Box px={{ base: 0, md: 24 }}>
-											<Text fontSize="xl" textAlign="center" color="gray.700">
+											<Text fontSize="xl" textAlign="center" color={descTextColor}>
 												{block.blocks[1].textarea}
 											</Text>
 										</Box>
@@ -209,7 +214,7 @@ export default function HomePage({ home }: { home: Page }) {
 									{block.blocks[1].blockType === 'textareas' && (
 										<Box px={{ base: 0, md: 24 }}>
 											{block.blocks[1].texts.map(({ id, text }) => (
-												<Text key={id} fontSize="xl" textAlign="center" color="gray.700">
+												<Text key={id} fontSize="xl" textAlign="center" color={descTextColor}>
 													{text}
 												</Text>
 											))}
@@ -329,7 +334,7 @@ export default function HomePage({ home }: { home: Page }) {
 											data-aos-delay="100"
 										>
 											{block.blocks[1].texts.map(({ id, text }) => (
-												<Text key={id} fontSize="xl" color="gray.700">
+												<Text key={id} fontSize="xl" color={descTextColor}>
 													{text}
 												</Text>
 											))}
@@ -377,7 +382,13 @@ export default function HomePage({ home }: { home: Page }) {
 					 *
 					 */}
 					{block.blockType === 'section' && /community/i.test(block.blockName || '') && (
-						<Box id="community" as="section" py={24} bg="gray.100" position="relative">
+						<Box
+							id="community"
+							as="section"
+							py={24}
+							bg={colorMode === 'light' ? 'gray.100' : 'gray.900'}
+							position="relative"
+						>
 							<Box
 								w="full"
 								h={{ base: '20%', md: '45%' }}
@@ -410,13 +421,13 @@ export default function HomePage({ home }: { home: Page }) {
 											px={{ base: 0, md: 12, lg: 16, xl: 40, '2xl': 72 }}
 										>
 											{block.blocks[1].blockType === 'textarea' && (
-												<Text fontSize="xl" color="gray.700">
+												<Text fontSize="xl" color={descTextColor}>
 													{block.blocks[1].textarea}
 												</Text>
 											)}
 											{block.blocks[1].blockType === 'textareas' &&
 												block.blocks[1].texts.map(({ id, text }) => (
-													<Text key={id} fontSize="xl" color="gray.700">
+													<Text key={id} fontSize="xl" color={descTextColor}>
 														{text}
 													</Text>
 												))}
@@ -555,12 +566,15 @@ export default function HomePage({ home }: { home: Page }) {
 
 								<Center>
 									<Button
-										bg="white"
+										bg={colorMode === 'light' ? 'white' : 'gray.800'}
 										fontSize="xl"
 										py={8}
 										px={6}
 										data-aos="fade-down"
 										data-aos-delay={bp.match(/base|sm|md/) ? 0 : 100}
+										_hover={{
+											bg: colorMode === 'light' ? 'white' : 'gray.700',
+										}}
 									>
 										Read more
 									</Button>
@@ -593,7 +607,7 @@ export default function HomePage({ home }: { home: Page }) {
 										textAlign="center"
 										px={{ base: 0, md: 12, lg: 16, xl: 40, '2xl': 72 }}
 									>
-										<Text fontSize="2xl" color="gray.700" fontStyle="italic">
+										<Text fontSize="2xl" color={descTextColor} fontStyle="italic">
 											The simple act of caring is heroic
 										</Text>
 									</VStack>

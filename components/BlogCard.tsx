@@ -1,4 +1,4 @@
-import { VStack, Box, Flex, Heading, Text } from '@chakra-ui/react'
+import { VStack, Box, Flex, Heading, Text, useColorModeValue } from '@chakra-ui/react'
 import Image from './Image'
 
 export type BlogCardProps = {
@@ -29,7 +29,7 @@ export default function BlogCard({
 		<Box className="blog-card" {...rest}>
 			<VStack
 				maxW={360}
-				bg="white"
+				bg={useColorModeValue('white', 'gray.800')}
 				spacing={8}
 				mx={4}
 				px={6}

@@ -192,6 +192,33 @@ export interface Page {
 				blockType: 'link-group'
 		  }
 		| {
+				header: string
+				links: {
+					isLink?: boolean
+					text: string
+					url?: string
+					id?: string
+				}[]
+				id?: string
+				blockName?: string
+				blockType: 'link-text-group'
+		  }
+		| {
+				groups: {
+					header: string
+					links: {
+						isLink?: boolean
+						text: string
+						url: string
+						id?: string
+					}[]
+					id?: string
+				}[]
+				id?: string
+				blockName?: string
+				blockType: 'multiple-link-text-group'
+		  }
+		| {
 				groups: {
 					text: string
 					id?: string
@@ -437,6 +464,33 @@ export interface Page {
 							blockType: 'link-group'
 					  }
 					| {
+							header: string
+							links: {
+								isLink?: boolean
+								text: string
+								url?: string
+								id?: string
+							}[]
+							id?: string
+							blockName?: string
+							blockType: 'link-text-group'
+					  }
+					| {
+							groups: {
+								header: string
+								links: {
+									isLink?: boolean
+									text: string
+									url: string
+									id?: string
+								}[]
+								id?: string
+							}[]
+							id?: string
+							blockName?: string
+							blockType: 'multiple-link-text-group'
+					  }
+					| {
 							groups: {
 								text: string
 								id?: string
@@ -575,27 +629,6 @@ export interface ContactInformation {
 	address?: string
 	other?: (
 		| {
-				text: string
-				id?: string
-				blockName?: string
-				blockType: 'text'
-		  }
-		| {
-				textarea: string
-				id?: string
-				blockName?: string
-				blockType: 'textarea'
-		  }
-		| {
-				groups: {
-					text: string
-					id?: string
-				}[]
-				id?: string
-				blockName?: string
-				blockType: 'text-groups'
-		  }
-		| {
 				type: 'url' | 'page'
 				label: string
 				page: string | Page
@@ -603,6 +636,18 @@ export interface ContactInformation {
 				id?: string
 				blockName?: string
 				blockType: 'link'
+		  }
+		| {
+				links: {
+					type: 'url' | 'page'
+					label: string
+					page: string | Page
+					url: string
+					id?: string
+				}[]
+				id?: string
+				blockName?: string
+				blockType: 'links'
 		  }
 		| {
 				linkGroup?: {
@@ -619,41 +664,33 @@ export interface ContactInformation {
 				blockName?: string
 				blockType: 'link-group'
 		  }
-	)[]
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "seo".
- */
-export interface Seo {
-	id: string
-	siteName: string
-	description: string
-	favicon: Media
-	image?: Media
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "social-media".
- */
-export interface SocialMedia {
-	id: string
-	links?: {
-		type: 'url' | 'page'
-		label: string
-		page: string | Page
-		url: string
-		id?: string
-	}[]
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer".
- */
-export interface Footer {
-	id: string
-	copyright: string
-	other: (
+		| {
+				header: string
+				links: {
+					isLink?: boolean
+					text: string
+					url?: string
+					id?: string
+				}[]
+				id?: string
+				blockName?: string
+				blockType: 'link-text-group'
+		  }
+		| {
+				groups: {
+					header: string
+					links: {
+						isLink?: boolean
+						text: string
+						url: string
+						id?: string
+					}[]
+					id?: string
+				}[]
+				id?: string
+				blockName?: string
+				blockType: 'multiple-link-text-group'
+		  }
 		| {
 				groups: {
 					text: string
@@ -720,6 +757,41 @@ export interface Footer {
 				blockName?: string
 				blockType: 'multiple-text-header-group'
 		  }
+	)[]
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo".
+ */
+export interface Seo {
+	id: string
+	siteName: string
+	description: string
+	favicon: Media
+	image?: Media
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-media".
+ */
+export interface SocialMedia {
+	id: string
+	links?: {
+		type: 'url' | 'page'
+		label: string
+		page: string | Page
+		url: string
+		id?: string
+	}[]
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+	id: string
+	copyright: string
+	other: (
 		| {
 				type: 'url' | 'page'
 				label: string
@@ -755,6 +827,99 @@ export interface Footer {
 				id?: string
 				blockName?: string
 				blockType: 'link-group'
+		  }
+		| {
+				header: string
+				links: {
+					isLink?: boolean
+					text: string
+					url?: string
+					id?: string
+				}[]
+				id?: string
+				blockName?: string
+				blockType: 'link-text-group'
+		  }
+		| {
+				groups: {
+					header: string
+					links: {
+						isLink?: boolean
+						text: string
+						url: string
+						id?: string
+					}[]
+					id?: string
+				}[]
+				id?: string
+				blockName?: string
+				blockType: 'multiple-link-text-group'
+		  }
+		| {
+				groups: {
+					text: string
+					id?: string
+				}[]
+				id?: string
+				blockName?: string
+				blockType: 'text-groups'
+		  }
+		| {
+				header: string
+				text: string
+				id?: string
+				blockName?: string
+				blockType: 'text-header'
+		  }
+		| {
+				groups: {
+					header: string
+					text: string
+					id?: string
+				}[]
+				id?: string
+				blockName?: string
+				blockType: 'text-header-group'
+		  }
+		| {
+				header: string
+				text: string
+				id?: string
+				blockName?: string
+				blockType: 'textarea-header'
+		  }
+		| {
+				groups: {
+					header: string
+					text: string
+					id?: string
+				}[]
+				id?: string
+				blockName?: string
+				blockType: 'textarea-header-group'
+		  }
+		| {
+				header: string
+				texts: {
+					text: string
+					id?: string
+				}[]
+				id?: string
+				blockName?: string
+				blockType: 'multiple-text-header'
+		  }
+		| {
+				groups: {
+					header: string
+					texts: {
+						text: string
+						id?: string
+					}[]
+					id?: string
+				}[]
+				id?: string
+				blockName?: string
+				blockType: 'multiple-text-header-group'
 		  }
 	)[]
 }
