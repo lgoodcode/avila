@@ -34,12 +34,17 @@ import Carousel from '../components/Carousel'
 import GradientHeading from '../components/GradientHeading'
 import Image from '../components/Image'
 import Layout from '../components/Layout'
-import Seo from '../components/Seo'
 import styles from '../styles/landing.module.css'
 import waveSvg from '../assets/wave.svg'
 import type { Blog, Media, Page } from '../types/payload-types'
+import { getGlobalProps, type GlobalProps } from '../lib/getGlobalProps'
+
+type HomeProps = {
+	home: Page
+} & GlobalProps
 
 export async function getStaticProps() {
+	const globalProps = await getGlobalProps()
 	const data = await fetchAPI('/pages', {
 		where: {
 			slug: {
@@ -50,21 +55,20 @@ export async function getStaticProps() {
 
 	return {
 		props: {
+			...globalProps,
 			home: data.docs[0],
 		},
 	}
 }
 
-export default function HomePage({ home }: { home: Page }) {
+export default function HomePage({ home, nav, footer, globalSeo }: HomeProps) {
 	const bp = useBreakpoint()
 	const heroHeadingSize = useBreakpointValue({ base: 'xl', sm: '2xl', md: '3xl' })
 	const descTextColor = useColorModeValue('gray.700', 'whiteAlpha.800')
 	const { colorMode } = useColorMode()
 
 	return (
-		<Layout>
-			<Seo pageSeo={home.meta} />
-
+		<Layout nav={nav} footer={footer} globalSeo={globalSeo} pageSeo={home.meta}>
 			{home.content.map((block) => (
 				<Fragment key={block.id}>
 					{block.blockType === 'hero' && (
@@ -573,7 +577,10 @@ export default function HomePage({ home }: { home: Page }) {
 										data-aos="fade-down"
 										data-aos-delay={bp.match(/base|sm|md/) ? 0 : 100}
 										_hover={{
-											bg: colorMode === 'light' ? 'white' : 'gray.700',
+											bg: colorMode === 'light' ? 'whiteAlpha.800' : 'gray.700',
+										}}
+										_active={{
+											bg: colorMode === 'light' ? 'whiteAlpha.900' : 'gray.800',
 										}}
 									>
 										Read more

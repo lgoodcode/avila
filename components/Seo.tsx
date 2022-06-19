@@ -1,17 +1,14 @@
 import Head from 'next/head'
-import { useContext } from 'react'
-import { GlobalContext } from '../pages/_app'
-import type { Media, Page } from '../types/payload-types'
+import { getMediaURL } from '../lib/api'
+import type { Media, Page, Seo as SeoType } from '../types/payload-types'
 
-export type PageSeo = {
+export type SeoProps = {
+	globalSeo: SeoType
 	pageSeo: Page['meta']
 }
 
-export default function Seo({ pageSeo }: PageSeo) {
-	const {
-		seo: { siteName, description, image },
-	} = useContext(GlobalContext)
-
+export default function Seo({ globalSeo, pageSeo }: SeoProps) {
+	const { siteName, description, image, favicon } = globalSeo
 	const seo = {
 		title: pageSeo?.title ? `${pageSeo.title} | ${siteName}` : siteName,
 		description: pageSeo?.description || description,
@@ -21,6 +18,7 @@ export default function Seo({ pageSeo }: PageSeo) {
 	return (
 		<Head>
 			<title>{seo.title}</title>
+			{favicon && <link rel="shortcut icon" href={getMediaURL(favicon)} />}
 
 			<>
 				<meta property="og:title" content={seo.title} />
