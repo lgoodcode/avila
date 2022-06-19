@@ -1,11 +1,12 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import 'aos/dist/aos.css'
+import { AnimatePresence, motion } from 'framer-motion'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
-import { createContext } from 'react'
-import Hydrate from '../components/Hydrate'
+import { createContext, useEffect, useState } from 'react'
 import { fetchAPI, getMediaURL } from '../lib/api'
-import 'aos/dist/aos.css'
+import Hydrate from '../components/Hydrate'
+import Preloader from '../components/Preloader'
 import '../styles/global.css'
 import theme from '../theme'
 import type { Footer, Navigation, Seo } from '../types/payload-types'
@@ -24,6 +25,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 		nav,
 		footer,
 	} = pageProps
+	const [loading, setLoading] = useState(true)
+
+	useEffect(() => {
+		setTimeout(() => setLoading(false), 2e3)
+	}, [])
 
 	return (
 		<ChakraProvider theme={theme}>
@@ -37,7 +43,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 					/>
 				</Head>
 				<GlobalContext.Provider value={{ seo, nav, footer }}>
-					<Component {...pageProps} />
+					<AnimatePresence>
+						<motion.div
+							key={loading ? 'preloader' : 'page'}
+							initial={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+						>
+							{loading ? <Preloader /> : <Component {...pageProps} />}
+						</motion.div>
+					</AnimatePresence>
 				</GlobalContext.Provider>
 			</Hydrate>
 		</ChakraProvider>

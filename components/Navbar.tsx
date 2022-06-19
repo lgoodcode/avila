@@ -13,10 +13,10 @@ import {
 } from '@chakra-ui/react'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import MobileNav from './MobileNav'
+import { FaMoon, FaSun } from 'react-icons/fa'
 import logo from '../assets/avilacare-logo.webp'
 import type { Navigation } from '../types/payload-types'
-import { FaMoon, FaSun } from 'react-icons/fa'
+import MobileNav from './MobileNav'
 
 export type NavbarProps = {
 	nav: Navigation
@@ -26,8 +26,7 @@ export type NavbarProps = {
 
 export default function MyNavbar({ nav, height, mobile }: NavbarProps) {
 	const { colorMode, toggleColorMode } = useColorMode()
-	const buttonBg = useColorModeValue('whiteAlpha.800', 'whiteAlpha.300')
-	const buttonHover = { bg: useColorModeValue('whiteAlpha.900', 'whiteAlpha.400') }
+
 	return (
 		<Box
 			as="nav"
@@ -35,7 +34,6 @@ export default function MyNavbar({ nav, height, mobile }: NavbarProps) {
 			h={height}
 			px={useBreakpointValue({ base: 4, lg: 12, xl: 28 })}
 			bg={useColorModeValue('white', 'gray.800')}
-			// bg="white"
 			position="absolute"
 			zIndex={10}
 		>
@@ -64,8 +62,10 @@ export default function MyNavbar({ nav, height, mobile }: NavbarProps) {
 										alignItems="center"
 										justifyContent="center"
 										fontSize="20px"
+										color={colorMode === 'light' ? 'gray.800' : 'whiteAlpha.800'}
 										_hover={{
-											bg: 'gray.100',
+											color: colorMode === 'light' ? 'gray.900' : 'whiteAlpha.900',
+											bg: colorMode === 'light' ? 'gray.200' : 'gray.700',
 										}}
 									>
 										{label}
@@ -85,8 +85,8 @@ export default function MyNavbar({ nav, height, mobile }: NavbarProps) {
 							onClick={toggleColorMode}
 							aria-label={colorMode === 'light' ? 'dark-mode' : 'light-mode'}
 							icon={colorMode === 'light' ? <Icon as={FaMoon} /> : <Icon as={FaSun} />}
-							bg={buttonBg}
-							_hover={buttonHover}
+							bg={colorMode === 'light' ? 'whiteAlpha.800' : 'whiteAlpha.300'}
+							_hover={{ bg: colorMode === 'light' ? 'gray.200' : 'whiteAlpha.400' }}
 						/>
 					</HStack>
 				)}
